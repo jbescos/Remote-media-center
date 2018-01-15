@@ -8,8 +8,10 @@ import java.util.Comparator;
 import java.util.stream.Stream;
 
 import javax.inject.Named;
+import javax.inject.Singleton;
 
 @Named
+@Singleton
 public class FileService {
 
 	public Stream<File> getFilesFromPath(String path) throws IOException{
