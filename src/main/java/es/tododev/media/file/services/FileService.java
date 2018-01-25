@@ -12,14 +12,14 @@ import java.util.stream.Stream;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Named
 @Singleton
 public class FileService {
 	
-	private final static Logger log = LogManager.getLogger();
+	private final Logger logger = LoggerFactory.getLogger(FileService.class);
 
 	public Stream<File> getFilesFromPath(String path) throws IOException{
 		File head = Paths.get(path).toFile();
@@ -33,7 +33,7 @@ public class FileService {
 	
 	public File loadFileFromClasspath(String path) throws IOException {
 		String filename = path.substring(path.lastIndexOf("/"));
-		log.debug("Filename {}", filename);
+		logger.debug("Filename {}", filename);
 		String[] parsed = filename.split("\\.");
 		File temp = File.createTempFile(parsed[0], "."+parsed[1]);
 		temp.deleteOnExit();

@@ -2,18 +2,18 @@ package es.tododev.media;
 
 import java.io.IOException;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class Main {
 	
-	private final static Logger log = LogManager.getLogger();
+	private final static Logger logger = LoggerFactory.getLogger(Main.class);
 
 	public static void main(String[] args) throws IOException {
 		SpringApplication.run(Main.class, args);
-		log.debug("Applicationstarted");
+		logger.debug("Applicationstarted");
 	}
 }
