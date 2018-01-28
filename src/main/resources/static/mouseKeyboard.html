@@ -14,16 +14,20 @@
 		<li><a href="/mouseKeyboard.html">Mouse/Keyboard</a></li>
 	</ul>
 	<h2>Mouse/Keyboard</h2>
-	<div id="divA" style="width: 900px; height: 600px; clear: both; background-color: grey;"></div>
 	<span></span>
 	<span></span>
-	<script>
-		$("#divA").mousemove(function(e) {
+	<img id="screen" src="/screen/shoot" width="100%" height="100%" />
+	<script type = "text/javascript">
+		$("#screen").mousemove(function(e) {
 			var pageCoords = "( " + e.pageX + ", " + e.pageY + " )";
 			var clientCoords = "( " + e.clientX + ", " + e.clientY + " )";
 			$("span:first").text("( e.pageX, e.pageY ) - " + pageCoords);
 			$("span:last").text("( e.clientX, e.clientY ) - " + clientCoords);
 		});
+		setInterval(function(){
+		    $("#screen").attr("src", "/screen/shoot?"+new Date().getTime());
+		},1000);
+
 	</script>
 </body>
 </html>

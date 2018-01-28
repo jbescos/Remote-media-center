@@ -9,11 +9,13 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class Main {
-	
+
 	private final static Logger logger = LoggerFactory.getLogger(Main.class);
+	public static final String SCREEN_SHOOT_CACHE = "screeshoot";
 
 	public static void main(String[] args) throws IOException {
 		SpringApplication.run(Main.class, args);
 		logger.debug("Applicationstarted");
 	}
+	
 }

@@ -13,15 +13,25 @@ import javax.imageio.ImageIO;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.cache.annotation.Cacheable;
+
+import es.tododev.media.Main;
+
 @Named
 @Singleton
 public class ScreenService {
 
-	public byte[] screenShoot(int widthScale, int heightScale) throws AWTException, IOException {
+	private final Logger logger = LoggerFactory.getLogger(ScreenService.class);
+	
+	@Cacheable(Main.SCREEN_SHOOT_CACHE)
+	public byte[] screenShoot() throws IOException, AWTException {
+		logger.debug("Creating screenshoot");
 		Robot robot = new Robot();
 		Rectangle screenRect = new Rectangle(Toolkit.getDefaultToolkit().getScreenSize());
 		BufferedImage screenFullImage = robot.createScreenCapture(screenRect);
-		BufferedImage escaledImage = escaleImage(screenFullImage, widthScale, heightScale);
+//		BufferedImage escaledImage = escaleImage(screenFullImage, widthScale, heightScale);
 		return imageToByes(screenFullImage);
 	}
 	
