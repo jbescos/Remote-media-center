@@ -14,20 +14,32 @@
 		<li><a href="/mouseKeyboard.html">Mouse/Keyboard</a></li>
 	</ul>
 	<h2>Mouse/Keyboard</h2>
-	<span></span>
-	<span></span>
+	<span id="coordenates"></span>
 	<img id="screen" src="/screen/shoot" width="100%" height="100%" />
 	<script type = "text/javascript">
 		$("#screen").mousemove(function(e) {
-			var pageCoords = "( " + e.pageX + ", " + e.pageY + " )";
 			var clientCoords = "( " + e.clientX + ", " + e.clientY + " )";
-			$("span:first").text("( e.pageX, e.pageY ) - " + pageCoords);
-			$("span:last").text("( e.clientX, e.clientY ) - " + clientCoords);
+			$("#coordenates").text("( e.clientX, e.clientY ) - " + clientCoords);
+			$.ajax({url: "/screen/mouse/move", type: "get",
+			    data: {"x": e.clientX, "y": e.clientY, "width": parseInt($("#screen").width(), 10), "height": parseInt($("#screen").height(), 10)},
+			    async: false,
+			    beforeSend: function() {
+			    },
+			    success: function(response) {
+			    },
+			    error: function(xhr) {
+			    }
+			});
+			
 		});
+		
 		setInterval(function(){
 		    $("#screen").attr("src", "/screen/shoot?"+new Date().getTime());
 		},1000);
 
+		function escale(point, size){
+			
+		}
 	</script>
 </body>
 </html>

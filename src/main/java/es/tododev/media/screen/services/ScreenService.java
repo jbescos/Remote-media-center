@@ -1,6 +1,7 @@
 package es.tododev.media.screen.services;
 
 import java.awt.AWTException;
+import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.Robot;
@@ -15,24 +16,31 @@ import javax.inject.Singleton;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.cache.annotation.Cacheable;
-
-import es.tododev.media.Main;
 
 @Named
 @Singleton
 public class ScreenService {
 
 	private final Logger logger = LoggerFactory.getLogger(ScreenService.class);
+	private final Robot robot;
+	private final Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
 	
-	@Cacheable(Main.SCREEN_SHOOT_CACHE)
-	public byte[] screenShoot() throws IOException, AWTException {
+	public ScreenService() throws AWTException{
+		robot = new Robot();
+	}
+	
+	public byte[] screenShoot() throws IOException {
 		logger.debug("Creating screenshoot");
-		Robot robot = new Robot();
 		Rectangle screenRect = new Rectangle(Toolkit.getDefaultToolkit().getScreenSize());
 		BufferedImage screenFullImage = robot.createScreenCapture(screenRect);
 //		BufferedImage escaledImage = escaleImage(screenFullImage, widthScale, heightScale);
 		return imageToByes(screenFullImage);
+	}
+	
+	public void mouseMove(int x, int y, int width, int height) {
+		int escalatedX = dimension.width * x / width;
+		int escalatedY = dimension.height * y / height;
+		robot.mouseMove(escalatedX, escalatedY);
 	}
 	
 	private BufferedImage escaleImage(BufferedImage screenFullImage, int widthScale, int heightScale) {

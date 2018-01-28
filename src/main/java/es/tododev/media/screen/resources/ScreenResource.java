@@ -10,6 +10,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import es.tododev.media.screen.services.ScreenService;
@@ -25,7 +26,7 @@ public class ScreenResource {
 	}
 
 	@RequestMapping(path = "/shoot", method = RequestMethod.GET)
-	public ResponseEntity<Resource> shoot() throws IOException, AWTException {
+	public ResponseEntity<Resource> shoot() throws IOException {
 		byte[] screenshoot = screenService.screenShoot();
 		ByteArrayResource resource = new ByteArrayResource(screenshoot);
 		HttpHeaders header = new HttpHeaders();
@@ -33,6 +34,13 @@ public class ScreenResource {
 	    header.set(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=screenshoot.jpg");
 	    header.set(HttpHeaders.CONTENT_LENGTH, screenshoot.length+"");
 		return ResponseEntity.ok().headers(header).body(resource);
+	}
+	
+	@RequestMapping(path = "/mouse/move", method = RequestMethod.GET)
+	public ResponseEntity<String> mouseMove(@RequestParam(value="x", required=true) int x, @RequestParam(value="y", required=true) int y, 
+			@RequestParam(value="width", required=true) int width, @RequestParam(value="height", required=true) int height) throws IOException {
+		screenService.mouseMove(x, y, width, height);
+		return ResponseEntity.ok().build();
 	}
 
 }
