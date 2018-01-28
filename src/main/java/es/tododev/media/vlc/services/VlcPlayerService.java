@@ -24,13 +24,6 @@ public class VlcPlayerService {
     private EmbeddedMediaPlayerComponent mediaPlayerComponent;
     private boolean started;
     
-//    @PreDestroy
-//    public void predestroy() {
-//    	if(mediaPlayerComponent != null) {
-//    		
-//    	}
-//    }
-    
     public synchronized void open(String path) throws InterruptedException, SyncException {
     	close();
     	if(!started) {

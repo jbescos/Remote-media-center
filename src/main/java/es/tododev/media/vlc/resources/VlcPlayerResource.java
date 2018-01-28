@@ -29,25 +29,25 @@ public class VlcPlayerResource {
     }
     
     @RequestMapping("/play")
-    public ResponseEntity<String> play() {
+    public ResponseEntity<String> play() throws InterruptedException, SyncException {
     	vlcPlayerService.play();
     	return ResponseEntity.ok("play");
     }
     
     @RequestMapping("/stop")
-    public ResponseEntity<String> stop() {
+    public ResponseEntity<String> stop() throws InterruptedException, SyncException {
     	vlcPlayerService.stop();
     	return ResponseEntity.ok("stop");
     }
     
     @RequestMapping("/pause")
-    public ResponseEntity<String> pause() {
+    public ResponseEntity<String> pause() throws InterruptedException, SyncException {
     	vlcPlayerService.pause();
     	return ResponseEntity.ok("pause");
     }
     
     @RequestMapping("/skip")
-    public ResponseEntity<String> open(@RequestParam(value="delta", required=true) long delta) {
+    public ResponseEntity<String> open(@RequestParam(value="delta", required=true) long delta) throws InterruptedException, SyncException {
     	vlcPlayerService.skip(delta);
     	return ResponseEntity.ok("Skip "+delta);
     }
