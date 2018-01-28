@@ -93,8 +93,8 @@ public class ScreenService {
 	}
 
 	public void keyboardPress(int key, int event) {
-		logger.debug("Key: "+key+", Event: "+event);
 		int keyCode = KeyEvent.getExtendedKeyCodeForChar(key);
+		logger.debug("Key: {}, Event: {}, KeyCode {}", key, event, keyCode);
 		if(event == DOWN) {
 			robot.keyPress(keyCode);
 		}else if(event == UP) {
