@@ -58,7 +58,7 @@
 		    });
 		});
 		
-		$('#screen').keydown(function(event) {
+		$(document).keydown(function(event) {
 			eventBuffer.push({
 				action: 2,
 				x: -1,
@@ -70,7 +70,7 @@
 		    });
 		});
 		
-		$('#screen').keyup(function(event) {
+		$(document).keyup(function(event) {
 			eventBuffer.push({
 				action: 2,
 				x: -1,
@@ -80,7 +80,6 @@
 				button: event.keyCode,
 				event: 1
 		    });
-			$.ajax({url: "/screen/keyboard", type: "get", async: false, data: {"key": event.keyCode, "event": 1}});
 		});
 
 		
@@ -90,7 +89,7 @@
 				eventBuffer =[];
 				$('#screen').attr("src", "/screen/shoot?"+new Date().getTime());
 			}
-		}, 100);
+		}, 500);
 	</script>
 </body>
 </html>
