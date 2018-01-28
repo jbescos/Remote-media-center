@@ -18,26 +18,32 @@
 	<img id="screen" src="/screen/shoot" width="100%" height="100%" alt="Unable to load screen"/>
 	<script type = "text/javascript">
 	
-		$("#screen").mousemove(function(e) {
+		$('#screen').mousemove(function(e) {
 			var clientCoords = "( " + e.clientX + ", " + e.clientY + " )";
 			$("#coordenates").text("( e.clientX, e.clientY ) - " + clientCoords);
-			$.ajax({url: "/screen/mouse/move", type: "get",
-			    data: {"x": e.clientX, "y": e.clientY, "width": parseInt($("#screen").width(), 10), "height": parseInt($("#screen").height(), 10)},
-			    async: false
-			});
+			$.ajax({url: "/screen/mouse/move", type: "get", async: false, data: {"x": e.clientX, "y": e.clientY, "width": parseInt($("#screen").width(), 10), "height": parseInt($('#screen').height(), 10)}});
 		});
 		
 		$('#screen').mousedown(function(event) {
-			$.ajax({url: "/screen/mouse/click", type: "get", data: {"button": event.button, "event": 0}});
+			$.ajax({url: "/screen/mouse/click", type: "get", async: false, data: {"button": event.button, "event": 0}});
 		});
 		
 		$('#screen').mouseup(function(event) {
-			$.ajax({url: "/screen/mouse/click", type: "get", data: {"button": event.button, "event": 1}});
+			$.ajax({url: "/screen/mouse/click", type: "get", async: false, data: {"button": event.button, "event": 1}});
 		});
 		
+		$('#textarea').keydown(function(event) {
+			$.ajax({url: "/screen/keyboard", type: "get", async: false, data: {"key": event.keyCode, "event": 0}});
+		});
+		
+		$('#textarea').keyup(function(event) {
+			$.ajax({url: "/screen/keyboard", type: "get", async: false, data: {"key": event.keyCode, "event": 1}});
+		});
+
+		
 		setInterval(function(){
-		    $("#screen").attr("src", "/screen/shoot?"+new Date().getTime());
-		},1000);
+		    $('#screen').attr("src", "/screen/shoot?"+new Date().getTime());
+		}, 1000);
 	</script>
 </body>
 </html>

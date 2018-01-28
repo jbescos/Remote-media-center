@@ -48,5 +48,11 @@ public class ScreenResource {
 		screenService.mouseClick(button, event);
 		return ResponseEntity.ok().build();
 	}
+	
+	@RequestMapping(path = "/keyboard", method = RequestMethod.GET)
+	public ResponseEntity<String> keyboardPress(@RequestParam(value="event", required=true) int event, @RequestParam(value="key", required=true) int key) throws IOException {
+		screenService.keyboardPress(key, event);
+		return ResponseEntity.ok().build();
+	}
 
 }

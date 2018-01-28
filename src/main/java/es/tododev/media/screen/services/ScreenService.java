@@ -6,6 +6,7 @@ import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.Robot;
 import java.awt.Toolkit;
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -28,8 +29,8 @@ public class ScreenService {
 	private final static int BUTTON_LEFT = 1024;
 	private final static int BUTTON_MIDDLE = 2048;
 	private final static int BUTTON_RIGHT = 4096;
-	private final static int MOUSE_DOWN = 0;
-	private final static int MOUSE_UP = 1;
+	private final static int DOWN = 0;
+	private final static int UP = 1;
 	
 	public ScreenService() throws AWTException{
 		robot = new Robot();
@@ -53,11 +54,11 @@ public class ScreenService {
 		// 1024 button 0 - left
 		// 4096 button 2 - right
 		// 2048 button 1 - middle
-		logger.debug("Mouse button: "+button+", event: "+event);
+		logger.debug("Mouse button: "+button+", Event: "+event);
 		int mouseButton = mapToJavaMouse(button);
-		if(event == MOUSE_DOWN) {
+		if(event == DOWN) {
 			robot.mousePress(mouseButton);
-		}else if(event == MOUSE_UP) {
+		}else if(event == UP) {
 			robot.mouseRelease(mouseButton);
 		}else {
 			throw new UnsupportedOperationException("Event "+event+" is not supported");
@@ -88,6 +89,18 @@ public class ScreenService {
 			ImageIO.write(image, "jpg", baos);
 			baos.flush();
 			return baos.toByteArray();
+		}
+	}
+
+	public void keyboardPress(int key, int event) {
+		logger.debug("Key: "+key+", Event: "+event);
+		int keyCode = KeyEvent.getExtendedKeyCodeForChar(key);
+		if(event == DOWN) {
+			robot.keyPress(keyCode);
+		}else if(event == UP) {
+			robot.keyRelease(keyCode);
+		}else {
+			throw new UnsupportedOperationException("Event "+event+" is not supported");
 		}
 	}
 	
