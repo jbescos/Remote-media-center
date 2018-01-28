@@ -18,32 +18,79 @@
 	<img id="screen" src="/screen/shoot" width="100%" height="100%" alt="Unable to load screen"/>
 	<script type = "text/javascript">
 	
+		var eventBuffer = [];
+	
 		$('#screen').mousemove(function(e) {
 			var clientCoords = "( " + e.clientX + ", " + e.clientY + " )";
-			$("#coordenates").text("( e.clientX, e.clientY ) - " + clientCoords);
-			$.ajax({url: "/screen/mouse/move", type: "get", async: false, data: {"x": e.clientX, "y": e.clientY, "width": parseInt($("#screen").width(), 10), "height": parseInt($('#screen').height(), 10)}});
+			$("#coordenates").text("( X, Y ) - " + clientCoords);
+			eventBuffer.push({
+				action: 0,
+		        x: e.clientX,
+		        y: e.clientY,
+		        width: parseInt($("#screen").width(), 10),
+		        height: parseInt($('#screen').height(), 10),
+		        button: -1,
+				event: -1
+		    });
 		});
 		
 		$('#screen').mousedown(function(event) {
-			$.ajax({url: "/screen/mouse/click", type: "get", async: false, data: {"button": event.button, "event": 0}});
+			eventBuffer.push({
+				action: 1,
+				x: -1,
+		        y: -1,
+		        width: -1,
+		        height: -1,
+				button: event.button,
+				event: 0
+		    });
 		});
 		
 		$('#screen').mouseup(function(event) {
-			$.ajax({url: "/screen/mouse/click", type: "get", async: false, data: {"button": event.button, "event": 1}});
+			eventBuffer.push({
+				action: 1,
+				x: -1,
+		        y: -1,
+		        width: -1,
+		        height: -1,
+				button: event.button,
+				event: 1
+		    });
 		});
 		
-		$('#textarea').keydown(function(event) {
-			$.ajax({url: "/screen/keyboard", type: "get", async: false, data: {"key": event.keyCode, "event": 0}});
+		$('#screen').keydown(function(event) {
+			eventBuffer.push({
+				action: 2,
+				x: -1,
+		        y: -1,
+		        width: -1,
+		        height: -1,
+				button: event.keyCode,
+				event: 0
+		    });
 		});
 		
-		$('#textarea').keyup(function(event) {
+		$('#screen').keyup(function(event) {
+			eventBuffer.push({
+				action: 2,
+				x: -1,
+		        y: -1,
+		        width: -1,
+		        height: -1,
+				button: event.keyCode,
+				event: 1
+		    });
 			$.ajax({url: "/screen/keyboard", type: "get", async: false, data: {"key": event.keyCode, "event": 1}});
 		});
 
 		
 		setInterval(function(){
-		    $('#screen').attr("src", "/screen/shoot?"+new Date().getTime());
-		}, 1000);
+			if(eventBuffer.length != 0){
+				$.ajax({url: "/screen/action", type: "post", contentType: 'application/json', data: JSON.stringify(eventBuffer)});
+				eventBuffer =[];
+				$('#screen').attr("src", "/screen/shoot?"+new Date().getTime());
+			}
+		}, 100);
 	</script>
 </body>
 </html>
