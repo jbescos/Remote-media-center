@@ -17,6 +17,7 @@ import javax.inject.Singleton;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+
 @Named
 @Singleton
 public class ScreenService {
@@ -24,6 +25,11 @@ public class ScreenService {
 	private final Logger logger = LoggerFactory.getLogger(ScreenService.class);
 	private final Robot robot;
 	private final Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
+	private final static int BUTTON_LEFT = 1024;
+	private final static int BUTTON_MIDDLE = 2048;
+	private final static int BUTTON_RIGHT = 4096;
+	private final static int MOUSE_DOWN = 0;
+	private final static int MOUSE_UP = 1;
 	
 	public ScreenService() throws AWTException{
 		robot = new Robot();
@@ -41,6 +47,33 @@ public class ScreenService {
 		int escalatedX = dimension.width * x / width;
 		int escalatedY = dimension.height * y / height;
 		robot.mouseMove(escalatedX, escalatedY);
+	}
+	
+	public void mouseClick(int button, int event) {
+		// 1024 button 0 - left
+		// 4096 button 2 - right
+		// 2048 button 1 - middle
+		logger.debug("Mouse button: "+button+", event: "+event);
+		int mouseButton = mapToJavaMouse(button);
+		if(event == MOUSE_DOWN) {
+			robot.mousePress(mouseButton);
+		}else if(event == MOUSE_UP) {
+			robot.mouseRelease(mouseButton);
+		}else {
+			throw new UnsupportedOperationException("Event "+event+" is not supported");
+		}
+	}
+	
+	private int mapToJavaMouse(int mouseButton) {
+		if(mouseButton == 0) {
+			return BUTTON_LEFT;
+		}else if(mouseButton == 1) {
+			return BUTTON_MIDDLE;
+		}else if(mouseButton == 2) {
+			return BUTTON_RIGHT;
+		}else {
+			throw new UnsupportedOperationException("Mouse button "+mouseButton+" is not supported");
+		}
 	}
 	
 	private BufferedImage escaleImage(BufferedImage screenFullImage, int widthScale, int heightScale) {

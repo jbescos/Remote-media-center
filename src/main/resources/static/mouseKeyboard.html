@@ -15,31 +15,29 @@
 	</ul>
 	<h2>Mouse/Keyboard</h2>
 	<span id="coordenates"></span>
-	<img id="screen" src="/screen/shoot" width="100%" height="100%" />
+	<img id="screen" src="/screen/shoot" width="100%" height="100%" alt="Unable to load screen"/>
 	<script type = "text/javascript">
+	
 		$("#screen").mousemove(function(e) {
 			var clientCoords = "( " + e.clientX + ", " + e.clientY + " )";
 			$("#coordenates").text("( e.clientX, e.clientY ) - " + clientCoords);
 			$.ajax({url: "/screen/mouse/move", type: "get",
 			    data: {"x": e.clientX, "y": e.clientY, "width": parseInt($("#screen").width(), 10), "height": parseInt($("#screen").height(), 10)},
-			    async: false,
-			    beforeSend: function() {
-			    },
-			    success: function(response) {
-			    },
-			    error: function(xhr) {
-			    }
+			    async: false
 			});
-			
+		});
+		
+		$('#screen').mousedown(function(event) {
+			$.ajax({url: "/screen/mouse/click", type: "get", data: {"button": event.button, "event": 0}});
+		});
+		
+		$('#screen').mouseup(function(event) {
+			$.ajax({url: "/screen/mouse/click", type: "get", data: {"button": event.button, "event": 1}});
 		});
 		
 		setInterval(function(){
 		    $("#screen").attr("src", "/screen/shoot?"+new Date().getTime());
 		},1000);
-
-		function escale(point, size){
-			
-		}
 	</script>
 </body>
 </html>

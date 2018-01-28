@@ -42,5 +42,11 @@ public class ScreenResource {
 		screenService.mouseMove(x, y, width, height);
 		return ResponseEntity.ok().build();
 	}
+	
+	@RequestMapping(path = "/mouse/click", method = RequestMethod.GET)
+	public ResponseEntity<String> mouseClick(@RequestParam(value="event", required=true) int event, @RequestParam(value="button", required=true) int button) throws IOException {
+		screenService.mouseClick(button, event);
+		return ResponseEntity.ok().build();
+	}
 
 }
