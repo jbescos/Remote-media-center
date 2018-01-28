@@ -1,6 +1,5 @@
 package es.tododev.media.vlc.resources;
 
-import java.io.IOException;
 
 import javax.inject.Inject;
 
@@ -9,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import es.tododev.media.vlc.services.InvokeAndGet.SyncException;
 import es.tododev.media.vlc.services.VlcPlayerService;
 
 @RestController
@@ -23,7 +23,7 @@ public class VlcPlayerResource {
 	}
     
     @RequestMapping("/open")
-    public ResponseEntity<String> open(@RequestParam(value="path", required=true) String path) throws IOException {
+    public ResponseEntity<String> open(@RequestParam(value="path", required=true) String path) throws InterruptedException, SyncException {
     	vlcPlayerService.open(path);
     	return ResponseEntity.ok(path);
     }
@@ -53,7 +53,7 @@ public class VlcPlayerResource {
     }
     
     @RequestMapping("/close")
-    public ResponseEntity<String> close() {
+    public ResponseEntity<String> close() throws InterruptedException, SyncException {
     	vlcPlayerService.close();
     	return ResponseEntity.ok("close");
     }

@@ -3,14 +3,14 @@ package es.tododev.media.vlc.services;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
+import javax.annotation.PreDestroy;
 import javax.inject.Named;
 import javax.inject.Singleton;
 import javax.swing.JFrame;
-import javax.swing.SwingUtilities;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import es.tododev.media.vlc.services.InvokeAndGet.SyncException;
 import uk.co.caprica.vlcj.binding.LibVlc;
 import uk.co.caprica.vlcj.component.EmbeddedMediaPlayerComponent;
 import uk.co.caprica.vlcj.discovery.NativeDiscovery;
@@ -24,7 +24,14 @@ public class VlcPlayerService {
     private EmbeddedMediaPlayerComponent mediaPlayerComponent;
     private boolean started;
     
-    public synchronized void open(String path) {
+//    @PreDestroy
+//    public void predestroy() {
+//    	if(mediaPlayerComponent != null) {
+//    		
+//    	}
+//    }
+    
+    public synchronized void open(String path) throws InterruptedException, SyncException {
     	close();
     	if(!started) {
         	started = new NativeDiscovery().discover();
@@ -34,13 +41,12 @@ public class VlcPlayerService {
         		logger.debug("libvlc version {}", LibVlc.INSTANCE.libvlc_get_version());
         	}
     	}
-    	SwingUtilities.invokeLater(() -> reload(path));
-    	
+    	InvokeAndGet.execute(() -> reload(path), 20000);
     }
     
-    public synchronized void close() {
+    public synchronized void close() throws InterruptedException, SyncException {
     	if(frame != null) {
-    		SwingUtilities.invokeLater(() -> frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING)));
+    		InvokeAndGet.execute(() -> frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING)), 20000);
     	}
     	started = false;
     }
@@ -70,13 +76,14 @@ public class VlcPlayerService {
     }
     
     private void reload(String path) {
+    	logger.debug("Reload movie: {}", path);
     	mediaPlayerComponent = new EmbeddedMediaPlayerComponent();
     	frame = new JFrame(path);
     	frame.setExtendedState(JFrame.MAXIMIZED_BOTH); 
     	frame.setUndecorated(true);
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setContentPane(mediaPlayerComponent);
-        frame.setVisible(false);
+        frame.setVisible(true);
         mediaPlayerComponent.getMediaPlayer().playMedia(path);
         frame.addWindowListener(new WindowAdapter() {
             @Override
