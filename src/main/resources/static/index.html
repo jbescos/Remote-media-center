@@ -12,5 +12,17 @@
     	<li><a href="/mouseKeyboard.html">Mouse/Keyboard</a></li>
     </ul>
     <h2>File Explorer</h2>
+    <div id="tree">
+    </div>
+    
+    <script type = "text/javascript">
+    	$(document).ready(function() {
+    		$.ajax({url: "/files/from", type: "get", contentType: 'application/json', data: {"path": "/"},
+    			success: function(data, status) {
+					
+				}
+			});
+    	});
+    </script>
 </body>
 </html>
