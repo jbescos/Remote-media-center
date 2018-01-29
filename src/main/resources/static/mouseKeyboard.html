@@ -85,9 +85,12 @@
 		
 		setInterval(function(){
 			if(eventBuffer.length != 0){
-				$.ajax({url: "/screen/action", type: "post", contentType: 'application/json', data: JSON.stringify(eventBuffer)});
+				$.ajax({url: "/screen/action", type: "post", contentType: 'application/json', data: JSON.stringify(eventBuffer),
+					complete: function(data) {
+						$('#screen').attr("src", "/screen/shoot?"+new Date().getTime());
+					}
+				});
 				eventBuffer =[];
-				$('#screen').attr("src", "/screen/shoot?"+new Date().getTime());
 			}
 		}, 500);
 	</script>
