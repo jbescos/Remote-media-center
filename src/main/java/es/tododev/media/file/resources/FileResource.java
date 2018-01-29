@@ -27,7 +27,7 @@ public class FileResource {
     
     @RequestMapping("/from")
     public ResponseEntity<List<FileInfoDto>> getFiles(@RequestParam(value="path", required=true) String path) throws IOException {
-    	List<FileInfoDto> files = fileservice.getFilesFromPath(path).map(file -> new FileInfoDto(file.getName(), file.isDirectory())).collect(Collectors.toList());
+    	List<FileInfoDto> files = fileservice.getFilesFromPath(path).map(file -> new FileInfoDto(file.getName(), file.isDirectory(), file.getAbsolutePath())).collect(Collectors.toList());
     	return ResponseEntity.ok(files);
     }
 	

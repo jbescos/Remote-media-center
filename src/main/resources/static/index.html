@@ -12,17 +12,52 @@
     	<li><a href="/mouseKeyboard.html">Mouse/Keyboard</a></li>
     </ul>
     <h2>File Explorer</h2>
-    <div id="tree">
-    </div>
+    <ul>
+    	<li id="root"></li>
+    </ul>
     
     <script type = "text/javascript">
     	$(document).ready(function() {
-    		$.ajax({url: "/files/from", type: "get", contentType: 'application/json', data: {"path": "/"},
+    		appendFiles($("#root"), "/");
+    	});
+    	
+    	function appendFiles(parent, path){
+    		$.ajax({url: "/files/from", type: "get", contentType: "application/json", data: {"path": path},
     			success: function(data, status) {
+    				var ul = $('<ul/>');
+					for(i=0; i<data.length; i++){
+						var li = $('<li/>').attr('id', Math.random().toString(36).substr(2, 9)).text(data[i].fileName);
+						var path = data[i].absolutePath;
+						if(data[i].directory == true){
+							li.on("click", function() {
+								expand(li, path);
+						    });
+						}else{
+							li.on("click", function() {
+								downloadFile(path);
+						    });
+						}
+						ul.append(li);
+					}
+					if(data.length > 0){
+						parent.append(ul);
+					}
 					
 				}
 			});
-    	});
+    	}
+    	
+    	function expand(current, path){
+    		if(current.length > 0){
+    			current.empty();
+    		}else{
+    			appendFiles(current, path);
+    		}
+    	}
+    	
+    	function downloadFile(path){
+    		
+    	}
     </script>
 </body>
 </html>
