@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Paths;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.stream.Stream;
 
@@ -24,11 +25,14 @@ public class FileService {
 	public Stream<File> getFilesFromPath(String path) throws IOException{
 		File head = Paths.get(path).toFile();
 		if(head.exists()) {
-			Stream<File> files = Arrays.stream(head.listFiles()).sorted(Comparator.comparing(file -> file.getName(), String.CASE_INSENSITIVE_ORDER));
-			return files;
-		} else {
-			throw new IllegalArgumentException("Invalid file path: "+path);
+			File[] children = head.listFiles();
+			if(children != null) {
+				Stream<File> files = Arrays.stream(children)
+						.sorted(Comparator.comparing(file -> file.getName(), String.CASE_INSENSITIVE_ORDER));
+				return files;
+			}
 		}
+		return Stream.empty();
 	}
 	
 	public File loadFileFromClasspath(String path) throws IOException {

@@ -32,7 +32,7 @@
 			}).done(function(data) {
 				var ul = $('<ul></ul>');
 				data.forEach(function(item) {
-					var li = $('<li></li>').text(item.fileName);
+					var li = $('<li></li>').text(item.fileName).attr('expanded','0');
 					var path = item.absolutePath;
 					if (item.directory === true) {
 						li.on('click', function() {
@@ -52,10 +52,12 @@
 		}
 
 		function expand(current, path) {
-			if (current.children().length > 0) {
-				current.children().empty();
-			} else {
+			if (current.attr('expanded') === '0') {
 				appendFiles(current, path);
+				current.attr('expanded','1');
+			} else {
+				current.children().empty();
+				current.attr('expanded','0');
 			}
 		}
 
