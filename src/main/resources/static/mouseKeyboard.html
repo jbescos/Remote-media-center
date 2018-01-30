@@ -9,21 +9,24 @@
 <script src="/js/bootstrap.js"></script>
 </head>
 <body>
-	<h1>Remote Media Center</h1>
-	<ul>
-		<li><a href="/index.html">File Explorer</a></li>
-		<li><a href="/mouseKeyboard.html">Mouse/Keyboard</a></li>
-	</ul>
-	<h2>Mouse/Keyboard</h2>
-	<span id="coordenates"></span>
-	<img id="screen" src="/screen/shoot" width="100%" height="100%" alt="Unable to load screen"/>
+	<div class="container">
+		<h1>Remote Media Center</h1>
+		<div class="row">
+			<ul class="nav navbar navbar-left d-flex d-inline-flex">
+				<li class="nav-item d-inline-flex  align-items-center mr-2"><a class="nav-link d-inline-flex" href="/index.html">File Explorer</a></li>
+				<li class="nav-item d-inline-flex  align-items-center mr-2"><a class="nav-link d-inline-flex" href="/mouseKeyboard.html">Mouse/Keyboard</a></li>
+			</ul>
+		</div>
+		<h2>Mouse/Keyboard</h2>
+		<div class="row">
+			<img id="screen" src="/screen/shoot" width="100%" height="100%" alt="Unable to load screen"/>
+		</div>
+	</div>
 	<script type = "text/javascript">
 	
 		var eventBuffer = [];
 	
 		$('#screen').mousemove(function(e) {
-			var clientCoords = "( " + e.clientX + ", " + e.clientY + " )";
-			$("#coordenates").text("( X, Y ) - " + clientCoords);
 			eventBuffer.push({
 				action: 0,
 		        x: e.clientX,

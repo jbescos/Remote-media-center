@@ -1,17 +1,21 @@
 package es.tododev.media.file.services;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.stream.Stream;
 
 import javax.inject.Named;
 import javax.inject.Singleton;
+import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,9 +25,10 @@ import org.slf4j.LoggerFactory;
 public class FileService {
 	
 	private final Logger logger = LoggerFactory.getLogger(FileService.class);
+	private final int FILEBUFFERSIZE = 1024; 
 
 	public Stream<File> getFilesFromPath(String path) throws IOException{
-		File head = Paths.get(path).toFile();
+		File head = loadFile(path);
 		if(head.exists()) {
 			File[] children = head.listFiles();
 			if(children != null) {
@@ -33,6 +38,26 @@ public class FileService {
 			}
 		}
 		return Stream.empty();
+	}
+	
+	private File loadFile(String path) {
+		return Paths.get(path).toFile();
+	}
+	
+	public void streamFileOut(HttpServletResponse response, String path) throws IOException {
+		Path filePath = Paths.get(path);
+		File file = filePath.toFile();
+    	response.setContentType(Files.probeContentType(filePath));
+    	response.setContentLengthLong(file.length());
+    	response.setHeader("Content-Disposition", "attachment; filename="+file.getName());
+    	byte[] bytes = new byte[FILEBUFFERSIZE];
+    	int bytesRead;
+    	OutputStream output = response.getOutputStream();
+    	try(InputStream input = new FileInputStream(file)){
+    		while ((bytesRead = input.read(bytes)) != -1) {
+        		output.write(bytes, 0, bytesRead);
+        	}
+    	}
 	}
 	
 	public File loadFileFromClasspath(String path) throws IOException {
