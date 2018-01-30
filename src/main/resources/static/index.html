@@ -1,9 +1,12 @@
 <!DOCTYPE HTML>
-<html>
+<html lang="en">
 <head>
 <title>Remote Media Center</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link rel="stylesheet" href="/css/bootstrap.css">
 <script src="/js/jquery-3.3.1.js"></script>
+<script src="/js/bootstrap.js"></script>
 </head>
 <body>
 	<h1>Remote Media Center</h1>
@@ -29,35 +32,38 @@
 				data : {
 					path : path
 				}
-			}).done(function(data) {
-				var ul = $('<ul></ul>');
-				data.forEach(function(item) {
-					var li = $('<li></li>').text(item.fileName).attr('expanded','0');
-					var path = item.absolutePath;
-					if (item.directory === true) {
-						li.on('click', function() {
-							expand(li, path);
+			}).done(
+					function(data) {
+						var ul = $('<ul></ul>');
+						data.forEach(function(item) {
+							var a = $('<a></a>').text(item.fileName);
+							var li = $('<li></li>').attr('expanded', '0');
+							li.append(a);
+							var path = item.absolutePath;
+							if (item.directory === true) {
+								a.on('click', function() {
+									expand(li, path);
+								});
+							} else {
+								a.on('click', function() {
+									downloadFile(path);
+								});
+							}
+							ul.append(li);
 						});
-					} else {
-						li.on('click', function() {
-							downloadFile(path);
-						});
-					}
-					ul.append(li);
-				});
-				if (data.length > 0) {
-					parent.append(ul);
-				}
-			});
+						if (data.length > 0) {
+							parent.append(ul);
+						}
+					});
 		}
 
 		function expand(current, path) {
 			if (current.attr('expanded') === '0') {
 				appendFiles(current, path);
-				current.attr('expanded','1');
+				current.attr('expanded', '1');
 			} else {
 				current.children().empty();
-				current.attr('expanded','0');
+				current.attr('expanded', '0');
 			}
 		}
 
@@ -65,5 +71,6 @@
 
 		}
 	</script>
+
 </body>
 </html>
