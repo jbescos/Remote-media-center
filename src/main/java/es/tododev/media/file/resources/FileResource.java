@@ -1,6 +1,7 @@
 package es.tododev.media.file.resources;
 
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -8,9 +9,11 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import es.tododev.media.file.dto.FileInfoDto;
 import es.tododev.media.file.services.FileService;
@@ -35,6 +38,12 @@ public class FileResource {
     @RequestMapping("/download")
     public void download(@RequestParam(value="path", required=true) String path, HttpServletResponse response) throws IOException {
     	fileservice.streamFileOut(response, path);
+    }
+    
+    @PostMapping("/upload")
+    public String handleFileUpload(@RequestParam("file") MultipartFile file, @RequestParam("path") String path) throws IOException {
+    	fileservice.uploadFile(file, Paths.get(path));
+        return "Uploaded "+file.getOriginalFilename();
     }
 	
 }

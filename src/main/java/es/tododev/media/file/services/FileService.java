@@ -9,6 +9,7 @@ import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.stream.Stream;
@@ -19,6 +20,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 @Named
 @Singleton
@@ -59,6 +62,14 @@ public class FileService {
         	}
     	}
 	}
+	
+	public void uploadFile(MultipartFile file, Path rootLocation) throws IOException {
+        String filename = StringUtils.cleanPath(file.getOriginalFilename());
+        if (file.isEmpty()) {
+            throw new IllegalArgumentException("Failed to store empty file " + filename);
+        }
+        Files.copy(file.getInputStream(), rootLocation.resolve(filename), StandardCopyOption.REPLACE_EXISTING);
+    }
 	
 	public File loadFileFromClasspath(String path) throws IOException {
 		String filename = path.substring(path.lastIndexOf("/"));
