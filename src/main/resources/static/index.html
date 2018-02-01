@@ -5,6 +5,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link rel="stylesheet" href="/css/bootstrap.css">
+<link rel="stylesheet" href="/css/remoteMediaCenter.css">
 <script src="/js/jquery-3.3.1.js"></script>
 <script src="/js/bootstrap.js"></script>
 </head>
@@ -19,9 +20,9 @@
 		</div>
 		<h2>File Explorer</h2>
 		<div class="row">
-			<div id="treeview7" class="treeview">
-				<ul class="list-group">
-					<li id="root" class="list-group-item node-treeview7"></li>
+			<div id="treeview7">
+				<ul>
+					<li id="root"></li>
 				</ul>
 			</div>
 		</div>
@@ -41,12 +42,13 @@
 				}
 			}).done(
 					function(data) {
-						var ul = $('<ul class="list-group"></ul>');
+						var ul = $('<ul></ul>');
 						data.forEach(function(item) {
 							var a = $('<a></a>').text(item.fileName);
-							var li = $('<li></li>').attr('expanded', '0').attr('class', 'list-group-item node-treeview7');
+							var li = $('<li></li>').attr('expanded', '0');
 							var path = item.absolutePath;
 							if (item.directory === true) {
+								a.attr('href', '#');
 								a.on('click', function() {
 									expand(li, path);
 								});
