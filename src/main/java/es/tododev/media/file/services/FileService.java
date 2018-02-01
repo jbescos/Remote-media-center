@@ -36,6 +36,8 @@ public class FileService {
 			File[] children = head.listFiles();
 			if(children != null) {
 				Stream<File> files = Arrays.stream(children)
+						.filter(file -> !file.isHidden())
+						.filter(file -> file.canRead())
 						.sorted(Comparator.comparing(file -> file.getName(), String.CASE_INSENSITIVE_ORDER));
 				return files;
 			}
