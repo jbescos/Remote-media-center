@@ -8,6 +8,8 @@ import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,6 +24,7 @@ import es.tododev.media.file.services.FileService;
 @RequestMapping("/files")
 public class FileResource {
 
+	private final Logger logger = LoggerFactory.getLogger(FileResource.class);
 	private final FileService fileservice;
 	
 	@Inject
@@ -42,7 +45,9 @@ public class FileResource {
     
     @PostMapping("/upload")
     public String handleFileUpload(@RequestParam("file") MultipartFile file, @RequestParam("path") String path) throws IOException {
+    	logger.debug("Uploading file {}", path);
     	fileservice.uploadFile(file, Paths.get(path));
+    	logger.debug("File {} uploaded", path);
         return "Uploaded "+file.getOriginalFilename();
     }
 	

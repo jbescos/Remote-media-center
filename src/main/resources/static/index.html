@@ -3,7 +3,8 @@
 <head>
 <title>Remote Media Center</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link rel="stylesheet" href="/css/bootstrap.css">
 <link rel="stylesheet" href="/css/remoteMediaCenter.css">
 <script src="/js/jquery-3.3.1.js"></script>
@@ -27,7 +28,32 @@
 			</div>
 		</div>
 	</div>
+	
+	<!-- Modal -->
+	<div id="myModal" class="modal fade" role="dialog">
+	  <div class="modal-dialog">
+	    <!-- Modal content-->
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h4 class="modal-title">Upload File</h4>
+	      </div>
+	      <div class="modal-body">
+	        <form id="myForm" action="/files/upload" method="post" enctype="multipart/form-data"> 
+			    <input type="hidden" name="path"/> 
+			    <input type="file" id="file" name="file" size="10"/>
+			    <input type="submit" value="Upload" /> 
+			</form>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	      </div>
+	    </div>
+	
+	  </div>
+	</div>
+	
 	<script type="text/javascript">
+		
 		$(document).ready(function() {
 			appendFiles($("#root"), "/");
 		});
@@ -44,25 +70,53 @@
 					function(data) {
 						var ul = $('<ul></ul>');
 						data.forEach(function(item) {
-							var a = $('<a></a>').text(item.fileName);
 							var li = $('<li></li>').attr('expanded', '0');
-							var path = item.absolutePath;
-							if (item.directory === true) {
-								a.attr('href', '#');
-								a.on('click', function() {
-									expand(li, path);
-								});
-							} else {
-								var encoded = encodeURI(path);
-								a.attr('href', '/files/download?path='+encoded).attr('target', '_blank');
-							}
-							li.append(a);
+							createFileItem(item, li);
 							ul.append(li);
 						});
 						if (data.length > 0) {
 							parent.append(ul);
 						}
 					});
+		}
+		
+		function createFileItem(item, li){
+			var div = $('<div></div>');
+			var file = $('<a></a>').text(item.fileName).attr('class', 'text-secondary');
+			div.append(file);
+			var path = item.absolutePath;
+			if (item.directory === true) {
+				file.attr('href', '#');
+				file.on('click', function() {
+					expand(li, path);
+				});
+				var upload = $('<a></a>').attr('class', 'float-right').text('Upload').attr('data-target', '#myModal').attr('data-toggle', 'modal').attr('href', '#');
+				upload.on('click', function() {
+					$('input.path').val(path);
+				});
+				div.append(upload);
+			} else {
+				var encoded = encodeURI(path);
+				var download = $('<a></a>').attr('class', 'float-right').text('Download').attr('href', '/files/download?path=' + encoded).attr('target', '_blank');
+				div.append(download);
+			}
+			li.append(div);
+		}
+		
+		function uploadFile(fileName){
+			var settings = {
+				    url: "/files/upload",
+				    method: "POST",
+				    fileName: fileName,
+				    multiple: true,
+				    onSuccess:function(files,data,xhr){
+				        alert("Upload success");
+				    },
+				    onError: function(files,status,errMsg){       
+				        alert("Upload Failed");
+				    }
+				}
+				$("#mulitplefileuploader").uploadFile(settings);
 		}
 
 		function expand(current, path) {

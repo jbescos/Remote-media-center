@@ -73,20 +73,4 @@ public class FileService {
         Files.copy(file.getInputStream(), rootLocation.resolve(filename), StandardCopyOption.REPLACE_EXISTING);
     }
 	
-	public File loadFileFromClasspath(String path) throws IOException {
-		String filename = path.substring(path.lastIndexOf("/"));
-		logger.debug("Filename {}", filename);
-		String[] parsed = filename.split("\\.");
-		File temp = File.createTempFile(parsed[0], "."+parsed[1]);
-		temp.deleteOnExit();
-		try(InputStream is = FileService.class.getResourceAsStream(path); FileOutputStream fos = new FileOutputStream(temp)){
-			int count;
-			byte[] buf = new byte[1024];
-			while ((count = is.read(buf, 0, buf.length)) > 0) {
-				fos.write(buf, 0, count);
-			}
-		}
-		return temp;
-	}
-	
 }
