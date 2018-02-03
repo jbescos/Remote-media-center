@@ -49,7 +49,9 @@ public class FileService {
 		return Paths.get(path).toFile();
 	}
 	
-	public void remove(String path) {
+	public void remove(String path) throws IOException {
+		Path paths = Paths.get(path);
+		Files.delete(paths);
 		logger.info("{} removed", path);
 	}
 	

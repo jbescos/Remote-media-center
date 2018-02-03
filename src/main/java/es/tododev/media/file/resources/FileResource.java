@@ -1,7 +1,6 @@
 package es.tododev.media.file.resources;
 
 import java.io.IOException;
-import java.nio.file.Paths;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -44,8 +43,9 @@ public class FileResource {
     }
     
     @RequestMapping("/remove")
-    public void remove(@RequestParam(value="path", required=true) String path) throws IOException {
+    public ResponseEntity<String> remove(@RequestParam(value="path", required=true) String path) throws IOException {
     	fileservice.remove(path);
+    	return ResponseEntity.ok(path+" removed");
     }
     
     @PostMapping("/upload")

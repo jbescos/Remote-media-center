@@ -71,8 +71,8 @@
 	                </p>
 	            </div>
 	            <div class="modal-footer">
-	                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-	                <a class="btn btn-danger btn-ok">Remove</a>
+	                <button id="closeRemovePopup" type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+	                <a id="remove" class="btn btn-danger btn-ok">Remove</a>
 	            </div>
 	        </div>
 	    </div>
@@ -149,10 +149,22 @@
 			} else {
 				var encoded = encodeURI(path);
 				var download = $('<a></a>').attr('class', 'float-right text-success px-2').text('Download').attr('href', '/files/download?path=' + encoded).attr('target', '_blank');
-				var remove = $('<a></a>').attr('data-href', '/files/remove?path=' + encoded).attr('class', 'float-right text-danger').text('Remove')
-					.attr('href', '#').attr('data-toggle', 'modal').attr('data-target', '#confirm-delete')
+				var remove = $('<a></a>').attr('class', 'float-right text-danger').text('Remove').attr('href', '#')
+					.attr('data-toggle', 'modal').attr('data-target', '#confirm-delete')
 					.on('click', function() {
 						$('#fileRemove').text(item.fileName);
+						$('#remove').off();
+						$('#remove').on('click', function() {
+							$.ajax({
+								url : '/files/remove',
+								type : 'GET',
+								contentType : 'application/json',
+								data : {path : path},
+								success: function(result){
+					            	$("#closeRemovePopup").trigger("click");
+					            },
+							});
+						});
 					});
 				div.append(remove);
 				div.append(download);
