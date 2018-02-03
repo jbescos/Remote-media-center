@@ -46,16 +46,22 @@ public class VlcPlayerResource {
     	return ResponseEntity.ok("pause");
     }
     
-    @RequestMapping("/skip")
-    public ResponseEntity<String> open(@RequestParam(value="delta", required=true) long delta) throws InterruptedException, SyncException {
-    	vlcPlayerService.skip(delta);
-    	return ResponseEntity.ok("Skip "+delta);
+    @RequestMapping("/position")
+    public ResponseEntity<String> open(@RequestParam(value="value", required=true) int value, @RequestParam(value="top", required=true) int top) throws InterruptedException, SyncException {
+    	vlcPlayerService.position(value, top);
+    	return ResponseEntity.ok("Position "+value+"/"+top);
     }
     
     @RequestMapping("/close")
     public ResponseEntity<String> close() throws InterruptedException, SyncException {
     	vlcPlayerService.close();
     	return ResponseEntity.ok("close");
+    }
+    
+    @RequestMapping("/isrunning")
+    public ResponseEntity<Boolean> isRunning() {
+    	boolean started = vlcPlayerService.isStarted();
+    	return ResponseEntity.ok(started);
     }
 	
 }

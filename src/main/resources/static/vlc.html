@@ -5,6 +5,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link rel="stylesheet" href="/css/bootstrap.css">
+<link rel="stylesheet" href="/css/remoteMediaCenter.css">
 <script src="/js/jquery-3.3.1.js"></script>
 <script src="/js/bootstrap.js"></script>
 </head>
@@ -15,16 +16,67 @@
 			<ul class="nav navbar navbar-left d-flex d-inline-flex">
 				<li class="nav-item d-inline-flex  align-items-center mr-2"><a class="nav-link d-inline-flex" href="/screen.html">Screen</a></li>
 				<li class="nav-item d-inline-flex  align-items-center mr-2"><a class="nav-link d-inline-flex" href="/fileExplorer.html">File Explorer</a></li>
-				<li class="nav-item d-inline-flex  align-items-center mr-2"><a class="nav-link d-inline-flex" href="/vlc.html">VLC</a></li>
+				<li class="nav-item d-inline-flex  align-items-center mr-2"><a class="nav-link d-inline-flex" href="/vlc.html">VLC Controls</a></li>
 			</ul>
 		</div>
-		<h2>VLC</h2>
+		<h2>VLC Controls</h2>
 		<div class="row">
-			
+			<div id="controls">
+				<div class="row">
+					<button id="play" type="button" class="btn btn-primary">Play</button>
+					<button id="stop" type="button" class="btn btn-primary">Stop</button>
+					<button id="pause" type="button" class="btn btn-primary">Pause</button>
+					<button id="close" type="button" class="btn btn-primary">Close</button>
+				</div>
+				<div class="row">
+					<div class="slidecontainer">
+					  <input type="range" min="0" max="1000" value="0" class="slider" id="range">
+					</div>
+				</div>
+			</div>
+			<div id="novlc">
+				<p>VLC is not running. Go to the File Explorer and run from there any movie.</p>
+			</div>
 		</div>
 	</div>
 	<script type = "text/javascript">
-	
+		$(document).ready(function() {
+			checkRunning();
+			setButtonAction('play');
+			setButtonAction('stop');
+			setButtonAction('pause');
+			setButtonAction('close');
+		});
+		
+		function checkRunning(){
+			$("#controls").hide();
+			$("#novlc").hide();
+			$.ajax( {
+	            url: '/vlc/isrunning',
+	            type : 'GET',
+				contentType : 'application/json',
+	            success: function(result){
+	            	if(result === true){
+	            		$("#controls").show();
+	            	}else{
+	            		$("#novlc").show();
+	            	}
+	            }
+	        });
+		}
+		
+		function setButtonAction(id){
+			$('#'+id).on('click', function() {
+				$.ajax({
+					url : '/vlc/'+id,
+					type : 'GET',
+					contentType : 'application/json',
+					success: function(result){
+						checkRunning();
+					}
+				});
+			});
+		}
 		
 	</script>
 </body>

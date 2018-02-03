@@ -3,7 +3,6 @@ package es.tododev.media.vlc.services;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-import javax.annotation.PreDestroy;
 import javax.inject.Named;
 import javax.inject.Singleton;
 import javax.swing.JFrame;
@@ -56,9 +55,10 @@ public class VlcPlayerService {
     	}
     }
     
-    public synchronized void skip(long delta) {
+    public synchronized void position(int value, int top) {
     	if(started) {
-    		mediaPlayerComponent.getMediaPlayer().skip(delta);
+    		float position = (float) value/top;
+    		mediaPlayerComponent.getMediaPlayer().setPosition(position);
     	}
     }
     
@@ -86,5 +86,9 @@ public class VlcPlayerService {
         });
         started = true;
     }
+
+	public synchronized boolean isStarted() {
+		return started;
+	}
     
 }
