@@ -46,6 +46,16 @@
 			setButtonAction('stop');
 			setButtonAction('pause');
 			setButtonAction('close');
+			$('#range').on('input', function () {
+			    var top = $('#range').attr('max');
+			    var value = $('#range').val();
+			    $.ajax( {
+		            url: '/vlc/position',
+		            type : 'GET',
+		            data : {top : top, value : value},
+					contentType : 'application/json'
+		        });
+			});
 		});
 		
 		function checkRunning(){
