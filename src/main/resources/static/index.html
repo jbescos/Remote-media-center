@@ -38,14 +38,23 @@
 	        <h4 class="modal-title">Upload File</h4>
 	      </div>
 	      <div class="modal-body">
-	        <form id="myForm" action="/files/upload" method="post" enctype="multipart/form-data"> 
-			    <input id="uploadFilePath" type="hidden" name="path"/> 
-			    <input type="file" name="file"/>
-			    <input type="submit" value="Upload" /> 
+	        <form id="myForm" action="/files/upload" method="post" enctype="multipart/form-data">
+	        	<ul>
+	        		<li>
+				    	<input id="uploadFilePath" type="hidden" name="path"/> 
+				    </li>
+				    <li>
+				    	<input type="file" name="file"/>
+				    </li>
+				    <li>
+				    	<input type="submit" value="Upload" id="submit"/> 
+				    </li>
+			    </ul>
 			</form>
 	      </div>
 	      <div class="modal-footer">
-	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	        <button id="closePopup" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	        <span id="loader" class="loader"></span>
 	      </div>
 	    </div>
 	
@@ -56,7 +65,31 @@
 		
 		$(document).ready(function() {
 			appendFiles($("#root"), "/");
+			$("#loader").hide();
 		});
+		
+		$('#myForm').submit(
+		    function(e) {
+		        $.ajax( {
+		            url: $('#myForm').attr('action'),
+		            type: $('#myForm').attr('method'),
+		            data: new FormData(this),
+		            processData: false,
+		            contentType: false,
+		            success: function(result){
+		            	$("#closePopup").show();
+		            	$("#submit").prop('disabled', false);
+		            	$("#loader").hide();
+		            },
+		            beforeSend: function(jqXHR, settings){
+		            	$("#closePopup").hide();
+		            	$("#submit").prop('disabled', true);
+		            	$("#loader").show();
+		            }
+		        } );
+		        e.preventDefault();
+		    } 
+		);
 
 		function appendFiles(parent, path) {
 			$.ajax({
