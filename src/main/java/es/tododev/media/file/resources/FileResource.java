@@ -43,6 +43,11 @@ public class FileResource {
     	fileservice.streamFileOut(response, path);
     }
     
+    @RequestMapping("/remove")
+    public void remove(@RequestParam(value="path", required=true) String path) throws IOException {
+    	fileservice.remove(path);
+    }
+    
     @PostMapping("/upload")
     public String handleFileUpload(@RequestParam("file") MultipartFile file, @RequestParam("path") String path) throws IOException {
     	fileservice.uploadFile(file, path);

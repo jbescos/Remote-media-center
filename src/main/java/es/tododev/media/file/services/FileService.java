@@ -49,6 +49,10 @@ public class FileService {
 		return Paths.get(path).toFile();
 	}
 	
+	public void remove(String path) {
+		logger.info("{} removed", path);
+	}
+	
 	public void streamFileOut(HttpServletResponse response, String path) throws IOException {
 		Path filePath = Paths.get(path);
 		File file = filePath.toFile();
