@@ -65,12 +65,22 @@ public class FileService {
     	}
 	}
 	
-	public void uploadFile(MultipartFile file, Path rootLocation) throws IOException {
+	public void uploadFile(MultipartFile file, String rootLocation) throws IOException {
         String filename = StringUtils.cleanPath(file.getOriginalFilename());
         if (file.isEmpty()) {
             throw new IllegalArgumentException("Failed to store empty file " + filename);
         }
-        Files.copy(file.getInputStream(), rootLocation.resolve(filename), StandardCopyOption.REPLACE_EXISTING);
+        byte[] bytes = new byte[FILEBUFFERSIZE];
+    	int bytesRead;
+        File newFile = Paths.get(rootLocation, filename).toFile();
+        InputStream input = file.getInputStream();
+        try(OutputStream output = new FileOutputStream(newFile)){
+        	while ((bytesRead = input.read(bytes)) != -1) {
+        		output.write(bytes, 0, bytesRead);
+        		output.flush();
+        	}
+        }
+        logger.debug("Uploaded file in {}", newFile.getAbsolutePath());
     }
 	
 }

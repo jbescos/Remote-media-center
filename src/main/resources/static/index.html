@@ -39,8 +39,8 @@
 	      </div>
 	      <div class="modal-body">
 	        <form id="myForm" action="/files/upload" method="post" enctype="multipart/form-data"> 
-			    <input type="hidden" name="path"/> 
-			    <input type="file" id="file" name="file" size="10"/>
+			    <input id="uploadFilePath" type="hidden" name="path"/> 
+			    <input type="file" name="file"/>
 			    <input type="submit" value="Upload" /> 
 			</form>
 	      </div>
@@ -92,7 +92,7 @@
 				});
 				var upload = $('<a></a>').attr('class', 'float-right').text('Upload').attr('data-target', '#myModal').attr('data-toggle', 'modal').attr('href', '#');
 				upload.on('click', function() {
-					$('input.path').val(path);
+					$('#uploadFilePath').val(path);
 				});
 				div.append(upload);
 			} else {
@@ -101,22 +101,6 @@
 				div.append(download);
 			}
 			li.append(div);
-		}
-		
-		function uploadFile(fileName){
-			var settings = {
-				    url: "/files/upload",
-				    method: "POST",
-				    fileName: fileName,
-				    multiple: true,
-				    onSuccess:function(files,data,xhr){
-				        alert("Upload success");
-				    },
-				    onError: function(files,status,errMsg){       
-				        alert("Upload Failed");
-				    }
-				}
-				$("#mulitplefileuploader").uploadFile(settings);
 		}
 
 		function expand(current, path) {

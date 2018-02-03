@@ -45,9 +45,7 @@ public class FileResource {
     
     @PostMapping("/upload")
     public String handleFileUpload(@RequestParam("file") MultipartFile file, @RequestParam("path") String path) throws IOException {
-    	logger.debug("Uploading file {}", path);
-    	fileservice.uploadFile(file, Paths.get(path));
-    	logger.debug("File {} uploaded", path);
+    	fileservice.uploadFile(file, path);
         return "Uploaded "+file.getOriginalFilename();
     }
 	
