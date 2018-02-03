@@ -144,6 +144,7 @@
 				var upload = $('<a></a>').attr('class', 'float-right text-success px-2').text('Upload').attr('data-target', '#myModal').attr('data-toggle', 'modal').attr('href', '#');
 				upload.on('click', function() {
 					$('#uploadFilePath').val(path);
+					clean(li);
 				});
 				div.append(upload);
 			} else {
@@ -179,9 +180,13 @@
 				appendFiles(current, path);
 				current.attr('expanded', '1');
 			} else {
-				current.children('ul').remove();
-				current.attr('expanded', '0');
+				clean(current);
 			}
+		}
+		
+		function clean(current){
+			current.children('ul').remove();
+			current.attr('expanded', '0');
 		}
 	</script>
 
