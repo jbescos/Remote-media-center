@@ -29,7 +29,9 @@
 	<script type = "text/javascript">
 	
 		var eventBuffer = [];
-	
+		
+		$('#screen').on('dragstart', function(event) { event.preventDefault(); });
+		
 		$('#screen').mousemove(function(e) {
 			var offset = $(this).offset();
 			var x = e.pageX - offset.left;
@@ -105,7 +107,7 @@
 				});
 				eventBuffer =[];
 			}
-		}, 200);
+		}, 500);
 	</script>
 </body>
 </html>
