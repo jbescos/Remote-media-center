@@ -53,6 +53,7 @@ public class ScreenResource {
 				logger.warn("Unknown action {}", event.getAction());
 			}
 		}
+		screenService.waitTillEventsDone();
 		String encoded = screenService.screenShootBase64();
 		return ResponseEntity.ok().body(encoded);
 	}

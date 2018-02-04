@@ -45,6 +45,10 @@ public class ScreenService {
 		return imageToBytes(screenFullImage);
 	}
 	
+	public void waitTillEventsDone() {
+		robot.waitForIdle();
+	}
+	
 	public String screenShootBase64() throws IOException {
 		byte[] screenshoot = screenShoot();
 		String encoded = Base64.getEncoder().encodeToString(screenshoot);
