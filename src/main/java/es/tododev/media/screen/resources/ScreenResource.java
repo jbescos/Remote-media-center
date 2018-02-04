@@ -1,13 +1,11 @@
 package es.tododev.media.screen.resources;
 
 import java.io.IOException;
-import java.util.Base64;
 import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ByteArrayResource;
-import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -55,8 +53,7 @@ public class ScreenResource {
 				logger.warn("Unknown action {}", event.getAction());
 			}
 		}
-		byte[] screenshoot = screenService.screenShoot();
-		String encoded = Base64.getEncoder().encodeToString(screenshoot);
+		String encoded = screenService.screenShootBase64();
 		return ResponseEntity.ok().body(encoded);
 	}
 	

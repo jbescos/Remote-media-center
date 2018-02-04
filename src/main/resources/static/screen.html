@@ -20,6 +20,9 @@
 		</div>
 		<h2>Screen</h2>
 		<div class="row">
+			<p>
+				<span id="coordenates"></span>
+			</p>
 			<img id="screen" src="/screen/shoot" width="100%" height="100%" alt="Unable to load screen"/>
 		</div>
 	</div>
@@ -28,10 +31,15 @@
 		var eventBuffer = [];
 	
 		$('#screen').mousemove(function(e) {
+			var offset = $(this).offset();
+			var x = e.pageX - offset.left;
+			var y = e.pageY - offset.top;
+			var clientCoords = "( " + x + ", " + y + " )";
+// 			$("#coordenates").text(clientCoords);
 			eventBuffer.push({
 				action: 0,
-		        x: e.clientX,
-		        y: e.clientY,
+		        x: x,
+		        y: y,
 		        width: parseInt($("#screen").width(), 10),
 		        height: parseInt($('#screen').height(), 10),
 		        button: -1,

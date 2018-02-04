@@ -10,6 +10,7 @@ import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.Base64;
 
 import javax.imageio.ImageIO;
 import javax.inject.Named;
@@ -41,7 +42,13 @@ public class ScreenService {
 		Rectangle screenRect = new Rectangle(Toolkit.getDefaultToolkit().getScreenSize());
 		BufferedImage screenFullImage = robot.createScreenCapture(screenRect);
 //		BufferedImage escaledImage = escaleImage(screenFullImage, widthScale, heightScale);
-		return imageToByes(screenFullImage);
+		return imageToBytes(screenFullImage);
+	}
+	
+	public String screenShootBase64() throws IOException {
+		byte[] screenshoot = screenShoot();
+		String encoded = Base64.getEncoder().encodeToString(screenshoot);
+		return encoded;
 	}
 	
 	public void mouseMove(int x, int y, int width, int height) {
@@ -84,7 +91,7 @@ public class ScreenService {
 		return escaledImage;
 	}
 	
-	private byte[] imageToByes(BufferedImage image) throws IOException {
+	private byte[] imageToBytes(BufferedImage image) throws IOException {
 		try(ByteArrayOutputStream baos = new ByteArrayOutputStream()){
 			ImageIO.write(image, "jpg", baos);
 			baos.flush();
