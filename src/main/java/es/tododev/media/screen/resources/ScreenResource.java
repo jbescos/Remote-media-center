@@ -40,20 +40,21 @@ public class ScreenResource {
 		return ResponseEntity.ok().headers(header).body(resource);
 	}
 	
+	@RequestMapping(path = "/actionandimage", method = RequestMethod.POST)
+	public ResponseEntity<String> actionAndImage(@RequestBody List<EventData> events) throws IOException {
+		screenService.action(events);
+		String encoded = screenService.screenShootBase64();
+		return ResponseEntity.ok().body(encoded);
+	}
+	
 	@RequestMapping(path = "/action", method = RequestMethod.POST)
-	public ResponseEntity<String> mouseMove(@RequestBody List<EventData> events) throws IOException {
-		for(EventData event : events) {
-			if(event.getAction() == EventData.MOUSE_MOVE) {
-				screenService.mouseMove(event.getX(), event.getY(), event.getWidth(), event.getHeight());
-			}else if(event.getAction() == EventData.MOUSE_CLICK) {
-				screenService.mouseClick(event.getButton(), event.getEvent());
-			}else if(event.getAction() == EventData.KEY_PRESS) {
-				screenService.keyboardPress(event.getButton(), event.getEvent());
-			}else {
-				logger.warn("Unknown action {}", event.getAction());
-			}
-		}
-		screenService.waitTillEventsDone();
+	public ResponseEntity<String> action(@RequestBody List<EventData> events) throws IOException {
+		screenService.action(events);
+		return ResponseEntity.ok().body("Events "+events.size());
+	}
+	
+	@RequestMapping(path = "/shoot64", method = RequestMethod.GET)
+	public ResponseEntity<String> shoot64() throws IOException {
 		String encoded = screenService.screenShootBase64();
 		return ResponseEntity.ok().body(encoded);
 	}

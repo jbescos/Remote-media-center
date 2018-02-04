@@ -11,6 +11,7 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Base64;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.inject.Named;
@@ -18,6 +19,8 @@ import javax.inject.Singleton;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import es.tododev.media.screen.dto.EventData;
 
 
 @Named
@@ -38,15 +41,24 @@ public class ScreenService {
 	}
 	
 	public byte[] screenShoot() throws IOException {
-		logger.debug("Creating screenshoot");
 		Rectangle screenRect = new Rectangle(Toolkit.getDefaultToolkit().getScreenSize());
 		BufferedImage screenFullImage = robot.createScreenCapture(screenRect);
 //		BufferedImage escaledImage = escaleImage(screenFullImage, widthScale, heightScale);
 		return imageToBytes(screenFullImage);
 	}
 	
-	public void waitTillEventsDone() {
-		robot.waitForIdle();
+	public void action(List<EventData> events) {
+		for(EventData event : events) {
+			if(event.getAction() == EventData.MOUSE_MOVE) {
+				mouseMove(event.getX(), event.getY(), event.getWidth(), event.getHeight());
+			}else if(event.getAction() == EventData.MOUSE_CLICK) {
+				mouseClick(event.getButton(), event.getEvent());
+			}else if(event.getAction() == EventData.KEY_PRESS) {
+				keyboardPress(event.getButton(), event.getEvent());
+			}else {
+				logger.warn("Unknown action {}", event.getAction());
+			}
+		}
 	}
 	
 	public String screenShootBase64() throws IOException {

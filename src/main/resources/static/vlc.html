@@ -21,13 +21,21 @@
 		</div>
 		<h2>VLC Controls</h2>
 		<div class="row">
-			<div id="controls">
-				<div class="row">
-					<button id="play" type="button" class="btn btn-primary">Play</button>
-					<button id="stop" type="button" class="btn btn-primary">Stop</button>
-					<button id="pause" type="button" class="btn btn-primary">Pause</button>
-					<button id="close" type="button" class="btn btn-primary">Close</button>
-				</div>
+			<div id="controls" style="width: 100%;">
+				<ul class="nav navbar navbar-left d-flex d-inline-flex">
+					<li class="nav-item d-inline-flex  align-items-center mr-2">
+						<button id="play" type="button" class="btn btn-primary">Play</button>
+					</li>
+					<li class="nav-item d-inline-flex  align-items-center mr-2">
+						<button id="stop" type="button" class="btn btn-primary">Stop</button>
+					</li>
+					<li class="nav-item d-inline-flex  align-items-center mr-2">
+						<button id="pause" type="button" class="btn btn-primary">Pause</button>
+					</li>
+					<li class="nav-item d-inline-flex  align-items-center mr-2">
+						<button id="close" type="button" class="btn btn-primary">Close</button>
+					</li>
+				</ul>
 				<div class="row">
 					<div class="slidecontainer">
 					  <input type="range" min="0" max="1000" value="0" class="slider" id="range">
