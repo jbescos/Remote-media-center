@@ -63,19 +63,19 @@ public class ScreenResource {
 	@RequestMapping(path = "/mouse/move", method = RequestMethod.GET)
 	public ResponseEntity<String> mouseMove(@RequestParam(value="x", required=true) int x, @RequestParam(value="y", required=true) int y, 
 			@RequestParam(value="width", required=true) int width, @RequestParam(value="height", required=true) int height) throws IOException {
-//		screenService.mouseMove(x, y, width, height);
+		screenService.mouseMove(x, y, width, height);
 		return ResponseEntity.ok().build();
 	}
 	
 	@RequestMapping(path = "/mouse/click", method = RequestMethod.GET)
 	public ResponseEntity<String> mouseClick(@RequestParam(value="event", required=true) int event, @RequestParam(value="button", required=true) int button) throws IOException {
-//		screenService.mouseClick(button, event);
+		screenService.mouseClick(button, event);
 		return ResponseEntity.ok().build();
 	}
 	
 	@RequestMapping(path = "/keyboard", method = RequestMethod.GET)
 	public ResponseEntity<String> keyboardPress(@RequestParam(value="event", required=true) int event, @RequestParam(value="key", required=true) int key) throws IOException {
-//		screenService.keyboardPress(key, event);
+		screenService.keyboardPress(key, event);
 		return ResponseEntity.ok().build();
 	}
 
