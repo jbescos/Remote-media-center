@@ -43,8 +43,15 @@
 				</div>
 			</div>
 			<div id="novlc">
-				<p>VLC is not running. Go to the File Explorer and run from there any movie.</p>
+				<p>VLC is not running. Go to the File Explorer and run from there any movie, or copy a Youtube link.</p>
 			</div>
+			
+		</div>
+		<h3>Youtube link</h3>
+		<div class="row">
+			<p>
+			 	<input type="text" id="link" size="100%"/><button id="openLink" type="button" class="btn btn-primary">Go</button>
+			</p>
 		</div>
 	</div>
 	<script type = "text/javascript">
@@ -63,6 +70,17 @@
 		            data : {top : top, value : value},
 					contentType : 'application/json'
 		        });
+			});
+			$('#openLink').on('click', function() {
+				$.ajax({
+					url : '/vlc/open',
+					type : 'GET',
+					contentType : 'application/json',
+					data : {path : $('#link').val()},
+					success: function(result){
+						checkRunning();
+		            }
+				});
 			});
 		});
 		

@@ -77,6 +77,7 @@ public class VlcPlayerService {
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setContentPane(mediaPlayerComponent);
         frame.setVisible(true);
+        mediaPlayerComponent.getMediaPlayer().setPlaySubItems(true);
         mediaPlayerComponent.getMediaPlayer().playMedia(path);
         frame.addWindowListener(new WindowAdapter() {
             @Override
