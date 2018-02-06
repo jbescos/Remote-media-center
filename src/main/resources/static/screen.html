@@ -16,6 +16,7 @@
 				<li class="nav-item d-inline-flex  align-items-center mr-2"><a class="nav-link d-inline-flex" href="/screen.html">Screen</a></li>
 				<li class="nav-item d-inline-flex  align-items-center mr-2"><a class="nav-link d-inline-flex" href="/fileExplorer.html">File Explorer</a></li>
 				<li class="nav-item d-inline-flex  align-items-center mr-2"><a class="nav-link d-inline-flex" href="/vlc.html">VLC Controls</a></li>
+				<li class="nav-item d-inline-flex  align-items-center mr-2"><a class="nav-link d-inline-flex" href="/system.html">System</a></li>
 			</ul>
 		</div>
 		<h2>Screen</h2>
@@ -109,7 +110,7 @@
 			}
 			$.ajax({url: "/screen/shoot64", aync: false, type: "get", contentType: 'application/json',
 				success: function(result){
-					$('#screen').attr('src', 'data:image/png;base64,'+result);
+					$('#screen').attr('src', 'data:image/jpeg;base64,'+result);
 				}
 			});
 		}, 500);

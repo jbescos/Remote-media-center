@@ -35,7 +35,7 @@ public class ScreenResource {
 		ByteArrayResource resource = new ByteArrayResource(screenshoot);
 		HttpHeaders header = new HttpHeaders();
 	    header.setContentType(MediaType.APPLICATION_OCTET_STREAM);
-	    header.set(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=screenshoot.jpg");
+	    header.set(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=screenshoot.jpeg");
 	    header.set(HttpHeaders.CONTENT_LENGTH, screenshoot.length+"");
 		return ResponseEntity.ok().headers(header).body(resource);
 	}
