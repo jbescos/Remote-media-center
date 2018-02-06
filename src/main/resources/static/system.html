@@ -25,10 +25,10 @@
 			<div id="controls" style="width: 100%;">
 				<ul class="nav navbar navbar-left d-flex d-inline-flex">
 					<li class="nav-item d-inline-flex  align-items-center mr-2">
-						<button id="play" type="button" class="btn btn-primary" data-target="#modal" data-toggle="modal">Restart computer</button>
+						<button id="restart" type="button" class="btn btn-primary" data-target="#modal" data-toggle="modal">Restart computer</button>
 					</li>
 					<li class="nav-item d-inline-flex  align-items-center mr-2">
-						<button id="stop" type="button" class="btn btn-primary" data-target="#modal" data-toggle="modal">Shutdown computer</button>
+						<button id="shutdown" type="button" class="btn btn-primary" data-target="#modal" data-toggle="modal">Shutdown computer</button>
 					</li>
 				</ul>
 			</div>
@@ -47,13 +47,32 @@
 	            </div>
 	            <div class="modal-footer">
 	                <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
-	                <a id="yes" class="btn btn-danger btn-ok">Yes</a>
+	                <button id="yes" type="button" class="btn btn-danger btn-ok" data-dismiss="modal">Yes</button>
 	            </div>
 	        </div>
 	    </div>
 	</div>
 	<script type = "text/javascript">
+		var action;
 		
+		$('#restart').on('click', function() {
+			action = 'restart';
+		});
+		
+		$('#shutdown').on('click', function() {
+			action = 'shutdown';
+		});
+		
+		$('#yes').on('click', function() {
+			$.ajax({
+				url : '/system/'+action,
+				type : 'GET',
+				contentType : 'application/json',
+				success: function(result){
+					checkRunning();
+				}
+			});
+		});
 		
 	</script>
 </body>
