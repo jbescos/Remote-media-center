@@ -30,6 +30,7 @@
 	<script type = "text/javascript">
 	
 		var eventBuffer = [];
+		var busy = false;
 		
 		$('#screen').on('dragstart', function(event) { event.preventDefault(); });
 		
@@ -100,20 +101,24 @@
 
 		
 		setInterval(function(){
-			if(eventBuffer.length != 0){
-				$.ajax({url: "/screen/action", aync: false, type: "post", contentType: 'application/json', data: JSON.stringify(eventBuffer),
+			if(busy === false){
+				busy = true;
+				if(eventBuffer.length != 0){
+					$.ajax({url: "/screen/action", aync: false, type: "post", contentType: 'application/json', data: JSON.stringify(eventBuffer),
+						success: function(result){
+							
+						}
+					});
+					eventBuffer =[];
+				}
+				$.ajax({url: "/screen/shoot64", aync: false, type: "get", contentType: 'application/json',
 					success: function(result){
-						
+						$('#screen').attr('src', 'data:image/jpeg;base64,'+result);
+						busy = false;
 					}
 				});
-				eventBuffer =[];
 			}
-			$.ajax({url: "/screen/shoot64", aync: false, type: "get", contentType: 'application/json',
-				success: function(result){
-					$('#screen').attr('src', 'data:image/jpeg;base64,'+result);
-				}
-			});
-		}, 500);
+		}, 200);
 		
 	</script>
 </body>
