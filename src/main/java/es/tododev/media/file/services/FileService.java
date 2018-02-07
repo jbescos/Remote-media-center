@@ -67,6 +67,7 @@ public class FileService {
     	try(InputStream input = new FileInputStream(file)){
     		while ((bytesRead = input.read(bytes)) != -1) {
         		output.write(bytes, 0, bytesRead);
+        		logger.debug("Reading {} bytes", bytesRead);
         	}
     	}
 	}
@@ -84,6 +85,7 @@ public class FileService {
         	while ((bytesRead = input.read(bytes)) != -1) {
         		output.write(bytes, 0, bytesRead);
         		output.flush();
+        		logger.debug("Writting {} bytes", bytesRead);
         	}
         }
         logger.debug("Uploaded file in {}", newFile.getAbsolutePath());
