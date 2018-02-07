@@ -116,11 +116,15 @@ public class ScreenService {
 	}
 
 	public void keyboardPress(int key, int event) {
-		logger.debug("Key: {}, Event: {}, KeyCode {}", key, event);
+		int mappedKey = key;
+		if(key == 13) {
+			mappedKey = '\n';
+		}
+		logger.debug("Key: {}, Event: {}", key, event);
 		if(event == DOWN) {
-			robot.keyPress(key);
+			robot.keyPress(mappedKey);
 		}else if(event == UP) {
-			robot.keyRelease(key);
+			robot.keyRelease(mappedKey);
 		}else {
 			throw new UnsupportedOperationException("Event "+event+" is not supported");
 		}
