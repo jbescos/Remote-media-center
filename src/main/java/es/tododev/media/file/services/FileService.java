@@ -9,7 +9,6 @@ import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.stream.Stream;
@@ -28,7 +27,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class FileService {
 	
 	private final Logger logger = LoggerFactory.getLogger(FileService.class);
-	private final int FILEBUFFERSIZE = 1024; 
+	private final int FILEBUFFERSIZE = 102400; 
 
 	public Stream<File> getFilesFromPath(String path) throws IOException{
 		File head = loadFile(path);
