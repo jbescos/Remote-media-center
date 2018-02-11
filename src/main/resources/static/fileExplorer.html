@@ -134,23 +134,25 @@
 		}
 		
 		function createFileItem(item, li){
-			var div = $('<div></div>');
-			var file = $('<a></a>').text(item.fileName).attr('class', 'text-secondary clickable');
+			var div = $('<div></div>').attr('class', 'row');
+			var file = $('<a></a>').text(item.fileName).attr('class', 'text-secondary clickable col');
 			div.append(file);
+			var actions = $('<div></div>').attr('class', 'col');
+			div.append(actions);
 			var path = item.absolutePath;
 			if (item.directory === true) {
 				file.on('click', function() {
 					expand(li, path);
 				});
-				var upload = $('<a></a>').attr('class', 'float-right text-success px-2 clickable').text('Upload').attr('data-target', '#myModal').attr('data-toggle', 'modal');
+				var upload = $('<a></a>').attr('class', 'text-success px-2 clickable').text('Upload').attr('data-target', '#myModal').attr('data-toggle', 'modal');
 				upload.on('click', function() {
 					$('#uploadFilePath').val(path);
 					clean(li);
 				});
-				div.append(upload);
+				actions.append(upload);
 			} else {
 				var encoded = encodeURI(path);
-				var vlc = $('<a></a>').attr('class', 'float-right text-primary px-2 clickable').text('VLC')
+				var vlc = $('<a></a>').attr('class', 'text-primary px-2 clickable').text('VLC')
 				.on('click', function() {
 					$.ajax({
 						url : '/vlc/open',
@@ -162,8 +164,8 @@
 			            }
 					});
 				});
-				var download = $('<a></a>').attr('class', 'float-right text-success px-2 clickable').text('Download').attr('href', '/files/download?path=' + encoded).attr('target', '_blank');
-				var remove = $('<a></a>').attr('class', 'float-right text-danger clickable').text('Remove')
+				var download = $('<a></a>').attr('class', 'text-success px-2 clickable').text('Download').attr('href', '/files/download?path=' + encoded).attr('target', '_blank');
+				var remove = $('<a></a>').attr('class', 'text-danger px-2 clickable').text('Remove')
 					.attr('data-toggle', 'modal').attr('data-target', '#confirm-delete')
 					.on('click', function() {
 						$('#fileRemove').text(item.fileName);
@@ -181,9 +183,9 @@
 							});
 						});
 					});
-				div.append(remove);
-				div.append(download);
-				div.append(vlc);
+				actions.append(download);
+				actions.append(vlc);
+				actions.append(remove);
 				
 			}
 			li.append(div);
