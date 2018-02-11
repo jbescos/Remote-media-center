@@ -11,27 +11,19 @@
 </head>
 <body>
 	<div class="container">
-		<h1>Remote Media Center</h1>
-		<div class="row">
-			<ul class="nav navbar navbar-left d-flex d-inline-flex">
-				<li class="nav-item d-inline-flex  align-items-center mr-2"><a class="nav-link d-inline-flex" href="/screen.html">Screen</a></li>
-				<li class="nav-item d-inline-flex  align-items-center mr-2"><a class="nav-link d-inline-flex" href="/fileExplorer.html">File Explorer</a></li>
-				<li class="nav-item d-inline-flex  align-items-center mr-2"><a class="nav-link d-inline-flex" href="/vlc.html">VLC Controls</a></li>
-				<li class="nav-item d-inline-flex  align-items-center mr-2"><a class="nav-link d-inline-flex" href="/system.html">System</a></li>
-			</ul>
+		<div class="page-header">
+			<h1>Remote Media Center</h1>
 		</div>
+		<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+			<a class="navbar-brand" href="/screen.html">Screen</a>
+			<a class="navbar-brand" href="/fileExplorer.html">File Explorer</a>
+			<a class="navbar-brand" href="/vlc.html">VLC Controls</a>
+			<a class="navbar-brand" href="/system.html">System</a>
+		</nav>
 		<h2>System</h2>
 		<div class="row">
-			<div id="controls" style="width: 100%;">
-				<ul class="nav navbar navbar-left d-flex d-inline-flex">
-					<li class="nav-item d-inline-flex  align-items-center mr-2">
-						<button id="restart" type="button" class="btn btn-primary" data-target="#modal" data-toggle="modal">Restart computer</button>
-					</li>
-					<li class="nav-item d-inline-flex  align-items-center mr-2">
-						<button id="shutdown" type="button" class="btn btn-primary" data-target="#modal" data-toggle="modal">Shutdown computer</button>
-					</li>
-				</ul>
-			</div>
+			<button id="restart" type="button" class="btn btn-primary" data-target="#modal" data-toggle="modal">Restart computer</button>
+			<button id="shutdown" type="button" class="btn btn-primary" data-target="#modal" data-toggle="modal">Shutdown computer</button>
 		</div>
 	</div>
 	<div class="modal fade" id="modal" role="dialog">

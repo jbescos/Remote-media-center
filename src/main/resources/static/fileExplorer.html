@@ -11,16 +11,18 @@
 <script src="/js/bootstrap.js"></script>
 </head>
 <body>
+
 	<div class="container">
-		<h1>Remote Media Center</h1>
-		<div class="row">
-			<ul class="nav navbar navbar-left d-flex d-inline-flex">
-				<li class="nav-item d-inline-flex  align-items-center mr-2"><a class="nav-link d-inline-flex" href="/screen.html">Screen</a></li>
-				<li class="nav-item d-inline-flex  align-items-center mr-2"><a class="nav-link d-inline-flex" href="/fileExplorer.html">File Explorer</a></li>
-				<li class="nav-item d-inline-flex  align-items-center mr-2"><a class="nav-link d-inline-flex" href="/vlc.html">VLC Controls</a></li>
-				<li class="nav-item d-inline-flex  align-items-center mr-2"><a class="nav-link d-inline-flex" href="/system.html">System</a></li>
-			</ul>
+		<div class="page-header">
+			<h1>Remote Media Center</h1>
 		</div>
+		<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+			<a class="navbar-brand" href="/screen.html">Screen</a>
+			<a class="navbar-brand" href="/fileExplorer.html">File Explorer</a>
+			<a class="navbar-brand" href="/vlc.html">VLC Controls</a>
+			<a class="navbar-brand" href="/system.html">System</a>
+		</nav>
+
 		<h2>File Explorer</h2>
 		<div class="row">
 			<ul style="width: 80%;">
@@ -28,88 +30,84 @@
 			</ul>
 		</div>
 	</div>
-	
+
 	<!-- Modal -->
 	<div id="myModal" class="modal fade" role="dialog">
-	  <div class="modal-dialog">
-	    <!-- Modal content-->
-	    <div class="modal-content">
-	      <div class="modal-header">
-	        <h4 class="modal-title">Upload File</h4>
-	      </div>
-	      
-	        <form id="myForm" action="/files/upload" method="post" enctype="multipart/form-data">
-		        <div class="modal-body">
-		        	<input id="uploadFilePath" type="hidden" name="path"/> 
-		        	<ul>	
-					    <li>
-					    	<input type="file" name="file"/>
-					    </li>
-				    </ul>
+		<div class="modal-dialog">
+			<!-- Modal content-->
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title">Upload File</h4>
+				</div>
+
+				<form id="myForm" action="/files/upload" method="post"
+					enctype="multipart/form-data">
+					<div class="modal-body">
+						<input id="uploadFilePath" type="hidden" name="path" />
+						<ul>
+							<li><input type="file" name="file" /></li>
+						</ul>
+					</div>
+					<div class="modal-footer">
+						<button id="closePopup" type="button" class="btn btn-default"
+							data-dismiss="modal">Close</button>
+						<span id="loader" class="loader"></span> <input type="submit"
+							class="btn btn-primary btn-ok" value="Upload" id="submit" />
+					</div>
+				</form>
+			</div>
+
+		</div>
+	</div>
+
+	<div class="modal fade" id="confirm-delete" role="dialog">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title">Remove File</h4>
+				</div>
+				<div class="modal-body">
+					<p>Do you want to remove the next file?</p>
+					<p>
+						<a class="text-primary" id="fileRemove"></a>
+					</p>
 				</div>
 				<div class="modal-footer">
-			        <button id="closePopup" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-			        <span id="loader" class="loader"></span>
-			        <input type="submit" class="btn btn-primary btn-ok" value="Upload" id="submit"/> 
-			      </div>
-			</form>
-	    </div>
-	
-	  </div>
+					<button id="closeRemovePopup" type="button" class="btn btn-default"
+						data-dismiss="modal">Cancel</button>
+					<a id="remove" class="btn btn-danger btn-ok">Remove</a>
+				</div>
+			</div>
+		</div>
 	</div>
-	
-	<div class="modal fade" id="confirm-delete" role="dialog">
-	    <div class="modal-dialog">
-	        <div class="modal-content">
-	            <div class="modal-header">
-	                <h4 class="modal-title">Remove File</h4>
-	            </div>
-	            <div class="modal-body">
-	            	<p>
-	                	Do you want to remove the next file? 
-	                </p>
-	                <p>
-	                	<a class="text-primary" id="fileRemove"></a>
-	                </p>
-	            </div>
-	            <div class="modal-footer">
-	                <button id="closeRemovePopup" type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-	                <a id="remove" class="btn btn-danger btn-ok">Remove</a>
-	            </div>
-	        </div>
-	    </div>
-	</div>
-	
+
 	<script type="text/javascript">
-		
 		$(document).ready(function() {
 			appendFiles($("#root"), "/");
 			$("#loader").hide();
 		});
-		
-		$('#myForm').submit(
-		    function(e) {
-		        $.ajax( {
-		            url: $('#myForm').attr('action'),
-		            type: $('#myForm').attr('method'),
-		            data: new FormData(this),
-		            processData: false,
-		            contentType: false,
-		            success: function(result){
-		            	$("#closePopup").show();
-		            	$("#submit").prop('disabled', false);
-		            	$("#loader").hide();
-		            	$("#closePopup").trigger("click");
-		            },
-		            beforeSend: function(jqXHR, settings){
-		            	$("#closePopup").hide();
-		            	$("#submit").prop('disabled', true);
-		            	$("#loader").show();
-		            }
-		        } );
-		        e.preventDefault();
-		    } 
-		);
+
+		$('#myForm').submit(function(e) {
+			$.ajax({
+				url : $('#myForm').attr('action'),
+				type : $('#myForm').attr('method'),
+				data : new FormData(this),
+				processData : false,
+				contentType : false,
+				success : function(result) {
+					$("#closePopup").show();
+					$("#submit").prop('disabled', false);
+					$("#loader").hide();
+					$("#closePopup").trigger("click");
+				},
+				beforeSend : function(jqXHR, settings) {
+					$("#closePopup").hide();
+					$("#submit").prop('disabled', true);
+					$("#loader").show();
+				}
+			});
+			e.preventDefault();
+		});
 
 		function appendFiles(parent, path) {
 			$.ajax({
@@ -119,23 +117,23 @@
 				data : {
 					path : path
 				}
-			}).done(
-					function(data) {
-						var ul = $('<ul></ul>');
-						data.forEach(function(item) {
-							var li = $('<li></li>').attr('expanded', '0');
-							createFileItem(item, li);
-							ul.append(li);
-						});
-						if (data.length > 0) {
-							parent.append(ul);
-						}
-					});
+			}).done(function(data) {
+				var ul = $('<ul></ul>');
+				data.forEach(function(item) {
+					var li = $('<li></li>').attr('expanded', '0');
+					createFileItem(item, li);
+					ul.append(li);
+				});
+				if (data.length > 0) {
+					parent.append(ul);
+				}
+			});
 		}
-		
-		function createFileItem(item, li){
+
+		function createFileItem(item, li) {
 			var div = $('<div></div>').attr('class', 'row');
-			var file = $('<a></a>').text(item.fileName).attr('class', 'text-secondary clickable col');
+			var file = $('<a></a>').text(item.fileName).attr('class',
+					'text-secondary clickable col');
 			div.append(file);
 			var actions = $('<div></div>').attr('class', 'col');
 			div.append(actions);
@@ -144,7 +142,9 @@
 				file.on('click', function() {
 					expand(li, path);
 				});
-				var upload = $('<a></a>').attr('class', 'text-success px-2 clickable').text('Upload').attr('data-target', '#myModal').attr('data-toggle', 'modal');
+				var upload = $('<a></a>').attr('class',
+						'text-success px-2 clickable').text('Upload').attr(
+						'data-target', '#myModal').attr('data-toggle', 'modal');
 				upload.on('click', function() {
 					$('#uploadFilePath').val(path);
 					clean(li);
@@ -152,41 +152,50 @@
 				actions.append(upload);
 			} else {
 				var encoded = encodeURI(path);
-				var vlc = $('<a></a>').attr('class', 'text-primary px-2 clickable').text('VLC')
-				.on('click', function() {
-					$.ajax({
-						url : '/vlc/open',
-						type : 'GET',
-						contentType : 'application/json',
-						data : {path : path},
-						success: function(result){
-							window.location = "vlc.html";
-			            }
-					});
-				});
-				var download = $('<a></a>').attr('class', 'text-success px-2 clickable').text('Download').attr('href', '/files/download?path=' + encoded).attr('target', '_blank');
-				var remove = $('<a></a>').attr('class', 'text-danger px-2 clickable').text('Remove')
-					.attr('data-toggle', 'modal').attr('data-target', '#confirm-delete')
-					.on('click', function() {
-						$('#fileRemove').text(item.fileName);
-						$('#remove').off();
-						$('#remove').on('click', function() {
+				var vlc = $('<a></a>')
+						.attr('class', 'text-info px-2 clickable').text('VLC')
+						.on('click', function() {
 							$.ajax({
-								url : '/files/remove',
+								url : '/vlc/open',
 								type : 'GET',
 								contentType : 'application/json',
-								data : {path : path},
-								success: function(result){
-					            	$("#closeRemovePopup").trigger("click");
-					            	li.remove();
-					            },
+								data : {
+									path : path
+								},
+								success : function(result) {
+									window.location = "vlc.html";
+								}
 							});
 						});
+				var download = $('<a></a>').attr('class',
+						'text-success px-2 clickable').text('Download').attr(
+						'href', '/files/download?path=' + encoded).attr(
+						'target', '_blank');
+				var remove = $('<a></a>').attr('class',
+						'text-danger px-2 clickable').text('Remove').attr(
+						'data-toggle', 'modal').attr('data-target',
+						'#confirm-delete').on('click', function() {
+					$('#fileRemove').text(item.fileName);
+					$('#remove').off();
+					$('#remove').on('click', function() {
+						$.ajax({
+							url : '/files/remove',
+							type : 'GET',
+							contentType : 'application/json',
+							data : {
+								path : path
+							},
+							success : function(result) {
+								$("#closeRemovePopup").trigger("click");
+								li.remove();
+							},
+						});
 					});
+				});
 				actions.append(download);
 				actions.append(vlc);
 				actions.append(remove);
-				
+
 			}
 			li.append(div);
 		}
@@ -199,8 +208,8 @@
 				clean(current);
 			}
 		}
-		
-		function clean(current){
+
+		function clean(current) {
 			current.children('ul').remove();
 			current.attr('expanded', '0');
 		}
