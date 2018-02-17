@@ -1,4 +1,4 @@
-package es.tododev.media.vlc.services;
+package es.tododev.media.player.services;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;

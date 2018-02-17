@@ -1,4 +1,4 @@
-package es.tododev.media.vlc.services;
+package es.tododev.media.player.services;
 
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -9,20 +9,21 @@ import javax.swing.JFrame;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import es.tododev.media.vlc.services.InvokeAndGet.SyncException;
+import es.tododev.media.player.services.InvokeAndGet.SyncException;
 import uk.co.caprica.vlcj.binding.LibVlc;
 import uk.co.caprica.vlcj.component.EmbeddedMediaPlayerComponent;
 import uk.co.caprica.vlcj.discovery.NativeDiscovery;
 
-@Named
+@Named("vlc")
 @Singleton
-public class VlcPlayerService {
+public class VlcPlayerService implements MediaPlayerService{
 
 	private final Logger logger = LoggerFactory.getLogger(VlcPlayerService.class);
 	private JFrame frame;
     private EmbeddedMediaPlayerComponent mediaPlayerComponent;
     private boolean started;
     
+    @Override
     public synchronized void open(String path) throws InterruptedException, SyncException {
     	close();
     	if(!started) {
@@ -36,6 +37,7 @@ public class VlcPlayerService {
     	InvokeAndGet.execute(() -> reload(path), 20000);
     }
     
+    @Override
     public synchronized void close() throws InterruptedException, SyncException {
     	if(frame != null) {
     		InvokeAndGet.execute(() -> frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING)), 20000);
@@ -43,18 +45,21 @@ public class VlcPlayerService {
     	started = false;
     }
     
+    @Override
     public synchronized void pause() {
     	if(started) {
     		mediaPlayerComponent.getMediaPlayer().pause();
     	}
     }
     
+    @Override
     public synchronized void play() {
     	if(started) {
     		mediaPlayerComponent.getMediaPlayer().play();
     	}
     }
     
+    @Override
     public synchronized void position(int value, int top) {
     	if(started) {
     		float position = (float) value/top;
@@ -62,6 +67,7 @@ public class VlcPlayerService {
     	}
     }
     
+    @Override
     public synchronized void stop() {
     	if(started) {
     		mediaPlayerComponent.getMediaPlayer().stop();
@@ -88,6 +94,7 @@ public class VlcPlayerService {
         started = true;
     }
 
+    @Override
 	public synchronized boolean isStarted() {
 		return started;
 	}

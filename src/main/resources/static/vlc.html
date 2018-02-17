@@ -58,7 +58,7 @@
 			    var top = $('#range').attr('max');
 			    var value = $('#range').val();
 			    $.ajax( {
-		            url: '/vlc/position',
+		            url: '/media/vlc/position',
 		            type : 'GET',
 		            data : {top : top, value : value},
 					contentType : 'application/json'
@@ -66,7 +66,7 @@
 			});
 			$('#openLink').on('click', function() {
 				$.ajax({
-					url : '/vlc/open',
+					url : '/media/vlc/open',
 					type : 'GET',
 					contentType : 'application/json',
 					data : {path : $('#link').val()},
@@ -81,7 +81,7 @@
 			$("#controls").hide();
 			$("#novlc").hide();
 			$.ajax( {
-	            url: '/vlc/isrunning',
+	            url: '/media/vlc/isrunning',
 	            type : 'GET',
 				contentType : 'application/json',
 	            success: function(result){
@@ -97,7 +97,7 @@
 		function setButtonAction(id){
 			$('#'+id).on('click', function() {
 				$.ajax({
-					url : '/vlc/'+id,
+					url : '/media/vlc/'+id,
 					type : 'GET',
 					contentType : 'application/json',
 					success: function(result){
