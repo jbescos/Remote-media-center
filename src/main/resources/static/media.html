@@ -11,17 +11,17 @@
 </head>
 <body>
 	<div class="container">
-		<div class="page-header">
+		<div class="page-header margin-header">
 			<h1>Remote Media Center</h1>
 		</div>
 		<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
 			<a class="navbar-brand" href="/screen.html">Screen</a>
 			<a class="navbar-brand" href="/fileExplorer.html">File Explorer</a>
-			<a class="navbar-brand" href="/vlc.html">VLC Controls</a>
+			<a class="navbar-brand" href="/media.html">Media Controls</a>
 			<a class="navbar-brand" href="/system.html">System</a>
 		</nav>
-		<h2>VLC Controls</h2>
-		<div id="controls">
+		<h2 class="margin-header">VLC Controls</h2>
+		<div id="vlcControls">
 			<div class="row">
 				<button id="play" type="button" class="btn btn-primary">Play</button>
 				<button id="stop" type="button" class="btn btn-primary">Stop</button>
@@ -34,7 +34,7 @@
 				</div>
 			</div>
 		</div>
-		<div id="novlc" class="row">
+		<div id="novlc" class="alert alert-warning" role="alert">
 			VLC is not running. Go to the File Explorer and run from there any movie, or copy a Youtube link.
 		</div>
 			
@@ -45,15 +45,33 @@
 				<button id="openLink" type="button" class="btn btn-primary">Go</button>
 			</div>
 		</div>
-		 
+		
+		<h2 class="margin-header">OMX Controls (for Raspberry Pi)</h2>
+		<div id="omxControls">
+			<div class="row">
+				<button id="stopOmx" type="button" class="btn btn-primary">Stop</button>
+				<button id="pauseOmx" type="button" class="btn btn-primary">Pause</button>
+				<button id="closeOmx" type="button" class="btn btn-primary">Close</button>
+			</div>
+		</div>
+		<div id="noomx" class="alert alert-warning" role="alert">
+			OMX is not running. Go to the File Explorer and run from there any movie.
+		</div>
 	</div>
 	<script type = "text/javascript">
 		$(document).ready(function() {
-			checkRunning();
-			setButtonAction('play');
-			setButtonAction('stop');
-			setButtonAction('pause');
-			setButtonAction('close');
+			checkRunning('vlc');
+			checkRunning('omx');
+			
+			setButtonAction('vlc', 'play');
+			setButtonAction('vlc', 'stop');
+			setButtonAction('vlc', 'pause');
+			setButtonAction('vlc', 'close');
+			
+			setButtonAction('omx', 'stopOmx');
+			setButtonAction('omx', 'pauseOmx');
+			setButtonAction('omx', 'closeOmx');
+			
 			$('#range').on('input', function () {
 			    var top = $('#range').attr('max');
 			    var value = $('#range').val();
@@ -77,31 +95,31 @@
 			});
 		});
 		
-		function checkRunning(){
-			$("#controls").hide();
-			$("#novlc").hide();
+		function checkRunning(app){
+			$("#"+app+"Controls").hide();
+			$("#no"+app).hide();
 			$.ajax( {
-	            url: '/media/vlc/isrunning',
+	            url: '/media/'+app+'/isrunning',
 	            type : 'GET',
 				contentType : 'application/json',
 	            success: function(result){
 	            	if(result === true){
-	            		$("#controls").show();
+	            		$("#"+app+"Controls").show();
 	            	}else{
-	            		$("#novlc").show();
+	            		$("#no"+app).show();
 	            	}
 	            }
 	        });
 		}
 		
-		function setButtonAction(id){
+		function setButtonAction(app, id){
 			$('#'+id).on('click', function() {
 				$.ajax({
-					url : '/media/vlc/'+id,
+					url : '/media/'+app+'/'+id,
 					type : 'GET',
 					contentType : 'application/json',
 					success: function(result){
-						checkRunning();
+						checkRunning(app);
 					}
 				});
 			});

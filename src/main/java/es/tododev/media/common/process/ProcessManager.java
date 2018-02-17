@@ -17,18 +17,25 @@ public class ProcessManager {
 	private ProcessBuilder processBuilder;
 	private Process process;
 	
-	public void prepare(String command) throws IOException {
-		if(command == null) {
+	public void prepare(String ... command) throws IOException {
+		if(command == null || command.length == 0) {
 			throw new IllegalArgumentException("Illegal process arguments, must be at least 1");
 		}
-		processBuilder = new ProcessBuilder("bash", "-c", command);
+		StringBuilder builder = new StringBuilder();
+		for(String c : command) {
+			builder.append(c).append(" ");
+		}
+		processBuilder = new ProcessBuilder("bash", "-c", builder.toString());
 		processBuilder.redirectErrorStream(true);
-		File processInOut = Files.createTempFile("process"+command, ".log").toFile();
-		logger.info("Create output/input/error of the process {} in {}", command, processInOut.getAbsolutePath());
-		processInOut.deleteOnExit();
-		processBuilder.redirectOutput(Redirect.to(processInOut));
-		processBuilder.redirectInput(Redirect.to(processInOut));
-		processBuilder.redirectError(Redirect.to(processInOut));
+		processBuilder.redirectOutput(Redirect.to(createTemp("process_out_"+command[0])));
+		processBuilder.redirectError(Redirect.to(createTemp("process_err_"+command[0])));
+	}
+	
+	private File createTemp(String name) throws IOException {
+		File tmp = Files.createTempFile(name, ".log").toFile();
+		tmp.deleteOnExit();
+		logger.info("Create temp file of the in {}", tmp.getAbsolutePath());
+		return tmp;
 	}
 	
 	public void start() throws IOException {

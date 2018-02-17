@@ -40,7 +40,7 @@ public class MediaPlayerResource {
     }
     
     @RequestMapping("/stop")
-    public ResponseEntity<String> stop(@PathVariable("app") String app) throws InterruptedException, SyncException {
+    public ResponseEntity<String> stop(@PathVariable("app") String app) throws Exception {
     	getApp(app).stop();
     	return ResponseEntity.ok("stop");
     }

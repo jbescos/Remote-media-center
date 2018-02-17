@@ -7,7 +7,7 @@ public interface MediaPlayerService {
     void pause();
     void play();
     void position(int value, int top);
-    void stop();
+    void stop() throws Exception;
     boolean isStarted();
 	
 }
