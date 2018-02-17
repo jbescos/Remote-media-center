@@ -53,16 +53,9 @@ public class ProcessManager {
 	
 	public void kill() throws IOException {
 		if(isAlive()) {
-			writeInput(KILL_INPUT);
-			process.destroyForcibly();
-		}else {
-			throw new IllegalArgumentException("The process is not running");
-		}
-	}
-	
-	public void writeInput(String input) throws IOException {
-		if(isAlive()) {
-			process.getInputStream().read(input.getBytes());
+			process.getOutputStream().write('q');
+			process.getOutputStream().flush();
+			process = null;
 		}else {
 			throw new IllegalArgumentException("The process is not running");
 		}
