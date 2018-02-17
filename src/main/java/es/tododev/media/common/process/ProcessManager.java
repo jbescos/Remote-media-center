@@ -16,7 +16,6 @@ public class ProcessManager {
 	private final Logger logger = LoggerFactory.getLogger(ProcessManager.class);
 	private ProcessBuilder processBuilder;
 	private Process process;
-	private final static String KILL_INPUT = "expect -c \"send \\003;\"";
 	
 	public void prepare(String ... command) throws IOException {
 		if(command == null || command.length == 0) {
