@@ -27,7 +27,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class FileService {
 	
 	private final Logger logger = LoggerFactory.getLogger(FileService.class);
-	private final int FILEBUFFERSIZE = 102400; 
+	private final int FILEBUFFERSIZE = 5120; 
 
 	public Stream<File> getFilesFromPath(String path) throws IOException{
 		File head = loadFile(path);
@@ -76,6 +76,7 @@ public class FileService {
         if (file.isEmpty()) {
             throw new IllegalArgumentException("Failed to store empty file " + filename);
         }
+        logger.debug("Uploading file {}", filename);
         byte[] bytes = new byte[FILEBUFFERSIZE];
     	int bytesRead;
         File newFile = Paths.get(rootLocation, filename).toFile();
