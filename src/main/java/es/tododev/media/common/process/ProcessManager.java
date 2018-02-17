@@ -28,7 +28,6 @@ public class ProcessManager {
 		}
 		processBuilder = new ProcessBuilder("bash", "-c", builder.toString());
 		processBuilder.redirectErrorStream(true);
-		processBuilder.redirectOutput(Redirect.to(createTemp("process_out_"+command[0])));
 		processBuilder.redirectError(Redirect.to(createTemp("process_err_"+command[0])));
 	}
 	

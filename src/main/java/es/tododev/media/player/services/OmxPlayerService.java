@@ -31,7 +31,7 @@ public class OmxPlayerService implements MediaPlayerService{
     }
     
 	@Override
-    public synchronized void close() {
+    public synchronized void close() throws IOException {
 		processManager.kill();
     }
     
