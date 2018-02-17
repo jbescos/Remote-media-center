@@ -17,6 +17,14 @@ public class ProcessManager {
 	private ProcessBuilder processBuilder;
 	private Process process;
 	
+	public ProcessManager() {
+		Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+			if(process != null) {
+				process.destroy();
+			}
+		}));
+	}
+	
 	public void prepare(String ... command) throws IOException {
 		if(command == null || command.length == 0) {
 			throw new IllegalArgumentException("Illegal process arguments, must be at least 1");
