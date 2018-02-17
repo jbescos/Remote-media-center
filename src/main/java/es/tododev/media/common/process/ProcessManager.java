@@ -16,10 +16,7 @@ public class ProcessManager {
 	private final Logger logger = LoggerFactory.getLogger(ProcessManager.class);
 	private ProcessBuilder processBuilder;
 	private Process process;
-	
-	public ProcessManager() {
-		Runtime.getRuntime().addShutdownHook(new Thread(() -> kill()));
-	}
+	private final static String KILL_INPUT = "expect -c \"send \\003;\"";
 	
 	public void prepare(String ... command) throws IOException {
 		if(command == null || command.length == 0) {
@@ -54,9 +51,18 @@ public class ProcessManager {
 		return process != null && process.isAlive();
 	}
 	
-	public void kill() {
+	public void kill() throws IOException {
 		if(isAlive()) {
+			writeInput(KILL_INPUT);
 			process.destroyForcibly();
+		}else {
+			throw new IllegalArgumentException("The process is not running");
+		}
+	}
+	
+	public void writeInput(String input) throws IOException {
+		if(isAlive()) {
+			process.getInputStream().read(input.getBytes());
 		}else {
 			throw new IllegalArgumentException("The process is not running");
 		}
