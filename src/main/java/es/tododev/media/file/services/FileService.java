@@ -27,7 +27,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class FileService {
 	
 	private final Logger logger = LoggerFactory.getLogger(FileService.class);
-	private final int FILEBUFFERSIZE = 5120; 
+	private final int FILEBUFFERSIZE = 10240000; 
 
 	public Stream<File> getFilesFromPath(String path) throws IOException{
 		File head = loadFile(path);

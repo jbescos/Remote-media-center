@@ -8,6 +8,7 @@
 <link rel="stylesheet" href="/css/bootstrap.css">
 <link rel="stylesheet" href="/css/remoteMediaCenter.css">
 <script src="/js/jquery-3.3.1.js"></script>
+<script src="/js/jquery.form.js"></script>
 <script src="/js/bootstrap.js"></script>
 </head>
 <body>
@@ -40,19 +41,19 @@
 					<h4 class="modal-title">Upload File</h4>
 				</div>
 
-				<form id="myForm" action="/files/upload" method="post"
-					enctype="multipart/form-data">
+				<form id="myForm" action="/files/upload" method="post" enctype="multipart/form-data">
 					<div class="modal-body">
 						<input id="uploadFilePath" type="hidden" name="path" />
 						<ul>
 							<li><input type="file" name="file" /></li>
 						</ul>
 					</div>
+					<div class="progress">
+					  <div id="loader" class="progress-bar" role="progressbar" style="width: 0%;">0%</div>
+					</div>
 					<div class="modal-footer">
-						<button id="closePopup" type="button" class="btn btn-default"
-							data-dismiss="modal">Close</button>
-						<span id="loader" class="loader"></span> <input type="submit"
-							class="btn btn-primary btn-ok" value="Upload" id="submit" />
+						<button id="closePopup" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+						<input type="submit" class="btn btn-primary btn-ok" value="Upload" id="submit" />
 					</div>
 				</form>
 			</div>
@@ -86,28 +87,27 @@
 			appendFiles($("#root"), "/");
 			$("#loader").hide();
 		});
-
-		$('#myForm').submit(function(e) {
-			$.ajax({
-				url : $('#myForm').attr('action'),
-				type : $('#myForm').attr('method'),
-				data : new FormData(this),
-				processData : false,
-				contentType : false,
-				success : function(result) {
-					$("#closePopup").show();
-					$("#submit").prop('disabled', false);
-					$("#loader").hide();
-					$("#closePopup").trigger("click");
-				},
-				beforeSend : function(jqXHR, settings) {
-					$("#closePopup").hide();
-					$("#submit").prop('disabled', true);
-					$("#loader").show();
-				}
-			});
-			e.preventDefault();
-		});
+		
+		$('#myForm').ajaxForm({
+	        beforeSend: function() {
+	        	progressBar('0');
+				$("#closePopup").hide();
+				$("#submit").prop('disabled', true);
+	        },
+	        uploadProgress: function(event, position, total, percentComplete) {
+	        	progressBar(''+percentComplete);
+	        },
+	        complete: function(xhr) {
+	        	$("#closePopup").show();
+				$("#submit").prop('disabled', false);
+				$("#closePopup").trigger("click");
+				progressBar('100');
+	        }
+	    });
+		
+		function progressBar(progress){
+			$("#loader").attr('style', 'width: '+progress+'%;').text(progress+'%');
+		}
 
 		function appendFiles(parent, path) {
 			$.ajax({
