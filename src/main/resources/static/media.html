@@ -63,14 +63,14 @@
 			checkRunning('vlc');
 			checkRunning('omx');
 			
-			setButtonAction('vlc', 'play');
-			setButtonAction('vlc', 'stop');
-			setButtonAction('vlc', 'pause');
-			setButtonAction('vlc', 'close');
+			setButtonAction('vlc', 'play', 'play');
+			setButtonAction('vlc', 'stop', 'stop');
+			setButtonAction('vlc', 'pause', 'pause');
+			setButtonAction('vlc', 'close', 'close');
 			
-			setButtonAction('omx', 'stopOmx');
-			setButtonAction('omx', 'pauseOmx');
-			setButtonAction('omx', 'closeOmx');
+			setButtonAction('omx', 'stopOmx', 'stop');
+			setButtonAction('omx', 'pauseOmx', 'pause');
+			setButtonAction('omx', 'closeOmx', 'close');
 			
 			$('#range').on('input', function () {
 			    var top = $('#range').attr('max');
@@ -112,10 +112,10 @@
 	        });
 		}
 		
-		function setButtonAction(app, id){
+		function setButtonAction(app, id, action){
 			$('#'+id).on('click', function() {
 				$.ajax({
-					url : '/media/'+app+'/'+id,
+					url : '/media/'+app+'/'+action,
 					type : 'GET',
 					contentType : 'application/json',
 					success: function(result){
