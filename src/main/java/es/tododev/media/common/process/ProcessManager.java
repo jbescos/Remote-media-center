@@ -18,11 +18,7 @@ public class ProcessManager {
 	private Process process;
 	
 	public ProcessManager() {
-		Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-			if(process != null) {
-				process.destroy();
-			}
-		}));
+		Runtime.getRuntime().addShutdownHook(new Thread(() -> kill()));
 	}
 	
 	public void prepare(String ... command) throws IOException {
@@ -60,7 +56,7 @@ public class ProcessManager {
 	
 	public void kill() {
 		if(isAlive()) {
-			process.destroy();
+			process.destroyForcibly();
 		}else {
 			throw new IllegalArgumentException("The process is not running");
 		}
