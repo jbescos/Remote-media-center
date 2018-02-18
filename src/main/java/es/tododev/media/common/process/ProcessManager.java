@@ -40,19 +40,16 @@ public class ProcessManager {
 	}
 	
 	public boolean isAlive() {
-		return process != null;
+		return process != null && process.isAlive();
 	}
 	
 	public void kill() throws IOException {
 		if(isAlive()) {
-			try {
-				process.getOutputStream().write('q');
-				process.getOutputStream().flush();
-			}finally {
-				process = null;
-				processBuilder = null;
-			}
+			process.getOutputStream().write('q');
+			process.getOutputStream().flush();
 		}
+		process = null;
+		processBuilder = null;
 	}
 	
 }
