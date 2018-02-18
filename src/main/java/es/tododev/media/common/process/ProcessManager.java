@@ -40,7 +40,7 @@ public class ProcessManager {
 	}
 	
 	public boolean isAlive() {
-		return process != null && process.isAlive();
+		return process != null;
 	}
 	
 	public void kill() throws IOException {
@@ -49,8 +49,6 @@ public class ProcessManager {
 			process.getOutputStream().flush();
 			process = null;
 			processBuilder = null;
-		}else {
-			throw new IllegalArgumentException("The process is not running");
 		}
 	}
 	
