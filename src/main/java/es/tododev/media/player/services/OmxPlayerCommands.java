@@ -5,7 +5,7 @@ public enum OmxPlayerCommands {
 	RTSP("rtsp:") {
 		@Override
 		public String getCommand(String input) {
-			return "omxplayer -o local "+input;
+			return "omxplayer "+input;
 		}
 	},
 	FILE("file:") {
