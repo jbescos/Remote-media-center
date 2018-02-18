@@ -45,10 +45,13 @@ public class ProcessManager {
 	
 	public void kill() throws IOException {
 		if(isAlive()) {
-			process.getOutputStream().write('q');
-			process.getOutputStream().flush();
-			process = null;
-			processBuilder = null;
+			try {
+				process.getOutputStream().write('q');
+				process.getOutputStream().flush();
+			}finally {
+				process = null;
+				processBuilder = null;
+			}
 		}
 	}
 	
