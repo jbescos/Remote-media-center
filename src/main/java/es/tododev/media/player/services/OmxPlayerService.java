@@ -25,8 +25,7 @@ public class OmxPlayerService implements MediaPlayerService{
     
 	@Override
     public synchronized void open(String path) throws IOException {
-		OmxPlayerCommands command = OmxPlayerCommands.getOmxPlayerCommands(path);
-		processManager.prepare(command.getCommand(path));
+		processManager.prepare("omxplayer "+path);
 		processManager.start();
     }
     

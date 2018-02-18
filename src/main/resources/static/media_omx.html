@@ -1,0 +1,58 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>Remote Media Center</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link rel="stylesheet" href="/css/bootstrap.css">
+<link rel="stylesheet" href="/css/remoteMediaCenter.css">
+<script src="/js/jquery-3.3.1.js"></script>
+<script src="/js/bootstrap.js"></script>
+<script src="/js/remoteMediaCenter.js"></script>
+</head>
+<body>
+	<div class="container">
+		<div class="page-header margin-header">
+			<h1>Remote Media Center</h1>
+		</div>
+		<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+			<a class="navbar-brand" href="/screen.html">Screen</a>
+			<a class="navbar-brand" href="/fileExplorer.html">File Explorer</a>
+			<a class="navbar-brand" href="/media_vlc.html">Media Controls</a>
+			<a class="navbar-brand" href="/system.html">System</a>
+		</nav>
+		<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+			<a class="navbar-brand" href="/media_vlc.html">VLC</a>
+			<a class="navbar-brand" href="/media_omx.html">OMX</a>
+		</nav>
+			
+		<h2 class="margin-header">OMX Controls (for Raspberry Pi)</h2>
+		<div id="omxControls" class="row">
+			<button id="closeOmx" type="button" class="btn btn-primary">Close</button>
+		</div>
+		<div id="noomx" class="alert alert-secondary row" role="alert">
+			OMX is not running. Go to the File Explorer and run from there any movie, or connect to a Stream Server.
+		</div>
+		<h2 class="margin-header">Stream Servers</h2>
+		<div class="alert alert-secondary row" role="alert">
+			You can write a YouTube link, or any stream URL (for example: rtsp://remotehost:8554/stream1).
+		</div>
+		<div class="input-group row">
+			<div class="input-group-prepend">
+			    <span class="input-group-text">URL:</span>
+			</div>
+			<input type="url" id="streamlink" class="form-control"/>
+			<button id="streamgo" type="button" class="btn btn-primary">Go</button>
+		</div>
+	</div>
+	<script type = "text/javascript">
+		$(document).ready(function() {
+			checkRunning('omx');
+			setButtonAction('omx', 'closeOmx', 'close');
+			setLinkAction('omx', 'stream');
+		});
+		
+		
+	</script>
+</body>
+</html>
