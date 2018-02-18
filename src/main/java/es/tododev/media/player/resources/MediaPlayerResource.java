@@ -70,7 +70,6 @@ public class MediaPlayerResource {
     }
     
     private MediaPlayerService getApp(String app) {
-    	logger.debug("App = {}", app);
     	return applicationContext.getBean(app, MediaPlayerService.class);
     }
 	

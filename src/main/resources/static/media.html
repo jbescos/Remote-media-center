@@ -34,27 +34,34 @@
 				</div>
 			</div>
 		</div>
-		<div id="novlc" class="alert alert-warning" role="alert">
+		<div id="novlc" class="alert alert-secondary" role="alert">
 			VLC is not running. Go to the File Explorer and run from there any movie, or copy a Youtube link.
 		</div>
 			
 		<h3>Youtube link</h3>
 		<div class="row">
 			<div class="input-group">
-				<input type="url" id="link" class="form-control"/>
-				<button id="openLink" type="button" class="btn btn-primary">Go</button>
+				<input type="url" id="youtubelink" class="form-control"/>
+				<button id="youtubego" type="button" class="btn btn-primary">Go</button>
 			</div>
 		</div>
 		
 		<h2 class="margin-header">OMX Controls (for Raspberry Pi)</h2>
 		<div id="omxControls">
 			<div class="row">
-				<button id="stopOmx" type="button" class="btn btn-primary">Stop</button>
 				<button id="closeOmx" type="button" class="btn btn-primary">Close</button>
 			</div>
 		</div>
-		<div id="noomx" class="alert alert-warning" role="alert">
-			OMX is not running. Go to the File Explorer and run from there any movie.
+		<div id="noomx" class="alert alert-secondary" role="alert">
+			OMX is not running. Go to the File Explorer and run from there any movie, or connect to a streaming server.
+		</div>
+		<h3>Streaming servers</h3>
+		<div class="input-group">
+			<div class="input-group-prepend">
+			    <span class="input-group-text">RSTP Protocol</span>
+			</div>
+			<input type="url" id="rtsplink" class="form-control" value="rtsp://remotehost:8554/stream1" />
+			<button id="rtspgo" type="button" class="btn btn-primary">Go</button>
 		</div>
 	</div>
 	<script type = "text/javascript">
@@ -66,9 +73,10 @@
 			setButtonAction('vlc', 'stop', 'stop');
 			setButtonAction('vlc', 'pause', 'pause');
 			setButtonAction('vlc', 'close', 'close');
+			setLinkAction('vlc', 'youtube');
 			
-			setButtonAction('omx', 'stopOmx', 'stop');
 			setButtonAction('omx', 'closeOmx', 'close');
+			setLinkAction('omx', 'rtsp');
 			
 			$('#range').on('input', function () {
 			    var top = $('#range').attr('max');
@@ -80,17 +88,7 @@
 					contentType : 'application/json'
 		        });
 			});
-			$('#openLink').on('click', function() {
-				$.ajax({
-					url : '/media/vlc/open',
-					type : 'GET',
-					contentType : 'application/json',
-					data : {path : $('#link').val()},
-					success: function(result){
-						checkRunning();
-		            }
-				});
-			});
+			
 		});
 		
 		function checkRunning(app){
@@ -108,6 +106,20 @@
 	            	}
 	            }
 	        });
+		}
+		
+		function setLinkAction(app, protocol){
+			$('#'+protocol+'go').on('click', function() {
+				$.ajax({
+					url : '/media/'+app+'/open',
+					type : 'GET',
+					contentType : 'application/json',
+					data : {path : $('#'+protocol+'link').val()},
+					success: function(result){
+						checkRunning(app);
+		            }
+				});
+			});
 		}
 		
 		function setButtonAction(app, id, action){

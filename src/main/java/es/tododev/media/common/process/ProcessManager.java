@@ -17,17 +17,11 @@ public class ProcessManager {
 	private ProcessBuilder processBuilder;
 	private Process process;
 	
-	public void prepare(String ... command) throws IOException {
-		if(command == null || command.length == 0) {
-			throw new IllegalArgumentException("Illegal process arguments, must be at least 1");
-		}
-		StringBuilder builder = new StringBuilder();
-		for(String c : command) {
-			builder.append(c).append(" ");
-		}
-		processBuilder = new ProcessBuilder("bash", "-c", builder.toString());
+	public void prepare(String command) throws IOException {
+		logger.info("Execute: {}", command);
+		processBuilder = new ProcessBuilder(command);
 		processBuilder.redirectErrorStream(true);
-		processBuilder.redirectError(Redirect.to(createTemp("process_err_"+command[0])));
+		processBuilder.redirectError(Redirect.to(createTemp("processmanager_err")));
 	}
 	
 	private File createTemp(String name) throws IOException {
@@ -54,6 +48,7 @@ public class ProcessManager {
 			process.getOutputStream().write('q');
 			process.getOutputStream().flush();
 			process = null;
+			processBuilder = null;
 		}else {
 			throw new IllegalArgumentException("The process is not running");
 		}
