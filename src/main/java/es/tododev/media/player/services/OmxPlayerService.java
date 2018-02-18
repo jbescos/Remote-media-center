@@ -16,7 +16,6 @@ import es.tododev.media.common.process.ProcessManager;
 public class OmxPlayerService implements MediaPlayerService{
 
 	private final Logger logger = LoggerFactory.getLogger(OmxPlayerService.class);
-	private final static String COMMAND = "omxplayer";
 	private final ProcessManager processManager;
 	
 	@Inject
@@ -26,7 +25,8 @@ public class OmxPlayerService implements MediaPlayerService{
     
 	@Override
     public synchronized void open(String path) throws IOException {
-		processManager.prepare(COMMAND, path);
+		OmxPlayerCommands command = OmxPlayerCommands.getOmxPlayerCommands(path);
+		processManager.prepare(command.getCommand(path));
 		processManager.start();
     }
     
@@ -45,10 +45,7 @@ public class OmxPlayerService implements MediaPlayerService{
     public void position(int value, int top) {}
     
 	@Override
-    public synchronized void stop() throws IOException {
-		processManager.kill();
-		processManager.start();
-    }
+    public synchronized void stop() throws IOException {}
 
     @Override
 	public synchronized boolean isStarted() {
