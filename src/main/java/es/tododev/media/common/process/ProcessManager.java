@@ -19,7 +19,7 @@ public class ProcessManager {
 	
 	public void prepare(String command) throws IOException {
 		logger.info("Execute: {}", command);
-		processBuilder = new ProcessBuilder(command);
+		processBuilder = new ProcessBuilder("bash", "-c", command);
 		processBuilder.redirectErrorStream(true);
 		processBuilder.redirectError(Redirect.to(createTemp("processmanager_err")));
 	}

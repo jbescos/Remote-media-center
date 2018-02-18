@@ -5,13 +5,13 @@ public enum OmxPlayerCommands {
 	RTSP("rtsp:") {
 		@Override
 		public String getCommand(String input) {
-			return "bash -c omxplayer -o local "+input;
+			return "omxplayer -o local "+input;
 		}
 	},
 	FILE("file:") {
 		@Override
 		public String getCommand(String input) {
-			return "bash -c omxplayer "+input;
+			return "omxplayer "+input;
 		}
 	};
 	
