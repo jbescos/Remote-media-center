@@ -1,5 +1,6 @@
 #!/bin/bash
 
+export XAUTHORITY=/home/pi/.Xauthority
 export DISPLAY=:0
 export PATH=/usr/lib/i386-linux-gnu/:$PATH
 
