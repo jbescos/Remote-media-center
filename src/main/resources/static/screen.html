@@ -104,21 +104,16 @@
 		setInterval(function(){
 			if(busy === false){
 				busy = true;
-				if(eventBuffer.length != 0){
-					$.ajax({url: "/screen/action", aync: false, type: "post", contentType: 'application/json', data: JSON.stringify(eventBuffer),
-						success: function(result){
-							
-						}
-					});
-					eventBuffer =[];
-				}
-				$.ajax({url: "/screen/shoot64", aync: false, type: "get", contentType: 'application/json',
+				$.ajax({url: "/screen/actionandimage", type: "post", contentType: 'application/json', data: JSON.stringify(eventBuffer),
 					success: function(result){
 						$('#screen').attr('src', 'data:image/jpeg;base64,'+result);
 					}
-				}).done(function(data) {busy = false;});
+				}).done(function(data) {
+					busy = false;
+				});
+				eventBuffer =[];
 			}
-		}, 200);
+		}, 100);
 		
 	</script>
 </body>
