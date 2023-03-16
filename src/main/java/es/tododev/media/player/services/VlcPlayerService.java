@@ -3,8 +3,8 @@ package es.tododev.media.player.services;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-import javax.inject.Named;
-import javax.inject.Singleton;
+import jakarta.inject.Named;
+import jakarta.inject.Singleton;
 import javax.swing.JFrame;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

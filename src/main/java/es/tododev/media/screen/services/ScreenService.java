@@ -13,8 +13,8 @@ import java.util.Base64;
 import java.util.List;
 
 import javax.imageio.ImageIO;
-import javax.inject.Named;
-import javax.inject.Singleton;
+import jakarta.inject.Named;
+import jakarta.inject.Singleton;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

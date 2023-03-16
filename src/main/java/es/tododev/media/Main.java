@@ -12,11 +12,12 @@ import org.springframework.context.annotation.PropertySource;
 @PropertySource("classpath:application.properties")
 public class Main {
 
-	private final static Logger logger = LoggerFactory.getLogger(Main.class);
+    private final static Logger logger = LoggerFactory.getLogger(Main.class);
 
-	public static void main(String[] args) throws IOException {
-		SpringApplication.run(Main.class, args);
-		logger.debug("Applicationstarted");
-	}
-	
+    public static void main(String[] args) throws IOException {
+        System.setProperty("java.awt.headless", "false");
+        SpringApplication.run(Main.class, args);
+        logger.debug("Applicationstarted");
+    }
+
 }

@@ -4,8 +4,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import javax.inject.Inject;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.inject.Inject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import es.tododev.media.file.dto.FileInfoDto;
 import es.tododev.media.file.services.FileService;
+import jakarta.servlet.http.HttpServletResponse;
 
 @RestController
 @RequestMapping("/files")

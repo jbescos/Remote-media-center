@@ -13,14 +13,15 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.stream.Stream;
 
-import javax.inject.Named;
-import javax.inject.Singleton;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.inject.Named;
+import jakarta.inject.Singleton;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
+
+import jakarta.servlet.http.HttpServletResponse;
 
 @Named
 @Singleton
