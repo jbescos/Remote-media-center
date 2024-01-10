@@ -9,11 +9,11 @@
     <logger name="ch" level="INFO"></logger>
     <logger name="org" level="INFO"></logger>
     <logger name="com" level="INFO"></logger>
-    <logger name="es" level="DEBUG"></logger>
+    <logger name="es" level="INFO"></logger>
 
-    <logger name="uk.co.caprica.vlcj" level="DEBUG"></logger>
+    <logger name="uk.co.caprica.vlcj" level="INFO"></logger>
 
-    <root level="debug">
+    <root level="info">
         <appender-ref ref="CONSOLE"></appender-ref>
     </root>
 
